@@ -1,0 +1,23 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Jan 30 19:19:16 2020
+
+@author: yueyingli
+"""
+
+#Implement an autocomplete system. 
+#That is, given a query string s and a set of all possible query strings, 
+#return all strings in the set that have s as a prefix.
+
+def autocomplete(s,WORDS):
+    results = set()
+    for word in WORDS:
+        if word.startswith(s):
+            results.add(word)
+    return results
+
+
+###用的是 starstwith 的function
+
+##还有一个复杂写的办法
