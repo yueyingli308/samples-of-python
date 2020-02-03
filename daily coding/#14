@@ -1,0 +1,47 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Feb  3 15:57:56 2020
+
+@author: yueyingli
+"""
+
+####Monte Carlo Method
+###Estimate π to 3 decimal places using a Monte Carlo method.
+
+from random import uniform
+from math import pow
+
+def generate():
+    return (uniform(-1, 1), uniform(-1, 1))
+
+def is_in_circle(coords):
+    return coords[0] * coords[0] + coords[1] * coords[1] < 1
+
+def estimate():
+    iterations = 10000000
+    in_circle = 0
+    for _ in range(iterations):
+        if is_in_circle(generate()):
+            in_circle += 1
+    pi_over_four = in_circle / iterations
+    return pi_over_four * 4
+
+ 
+####或者方法2: 
+#思路：随即设置一个变成为1的正方形，和一个半径为1的圆，
+##按照随即筛选的点是否落在园内统计世纪操作的Prob
+#这个公式既包含了pi的计算，具体为：1/4圆的面积/单位正方形的面积就是PI/4=Prob
+    
+import random,math
+s=1000*1000
+hits=0
+for i in range(s):
+    x = random.random()
+    y = random.random()
+    z= math.sqrt(x**2+y**2)
+    
+    if z<=1:
+        hits += 1
+Pi = (hits/s)*4
+print("%.3f" % Pi,)    ##这里保留三位小数
