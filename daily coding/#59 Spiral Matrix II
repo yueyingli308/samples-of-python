@@ -19,7 +19,7 @@ class Solution:
         left = 0; right = len(matrix[0])-1
         direct = 0; count = 0
         while True:
-            if direct == 0:
+            if direct == 0:  ## 0: go right   1: go down  2: go left  3: go up
                 for i in range(left, right+1):
                     count += 1; matrix[up][i] = count
                 up += 1
@@ -38,4 +38,71 @@ class Solution:
             if count == n*n: return matrix
             direct = (direct+1) % 4
 
+####Second Method
+##第二种思路：
+##########################################
+#####这个是#54-Spiral Matrix I的问题答案！！ II的答案在下！！！！！
+class Solution(object):
+    def spiralOrder(self, matrix):
+        """
+        :type matrix: List[List[int]]
+        :rtype: List[int]
+        """
+        ans = []
+        if not matrix: return ans
+        top, bottom, left, right = 0, len(matrix) - 1, 0, len(matrix[0]) - 1
+        ###left标记了column begin的位置，right是end位置
         
+        
+        while left <= right and top <= bottom:   ###表明是在一个位置上
+            for i in range(left, right + 1):
+                ans.append(matrix[top][i])  ##top即第一行，我们只需继续添加每个列的数据即可
+            top += 1  ##挪到下一行
+            if top > bottom: break
+            
+            for i in range(top, bottom + 1):  ##开始最右边填充一列的不同行
+                ans.append(matrix[i][right])
+            right -= 1   ##列往前挪一列
+            if right < left: break
+            
+            for i in range(right, left - 1, -1):  ##第三步，从右往左开始填充
+                ans.append(matrix[bottom][i])
+            bottom -= 1  ##向上移一行
+            if bottom < top: break
+            
+            for i in range(bottom, top - 1, -1):
+                ans.append(matrix[i][left])
+            left += 1
+            
+        return ans
+  ##########################################
+  #####这个是#59-Spiral Matrix II的问题答案！！
+        ans = [[0] * n for _ in range(n)]
+        top, bottom, left, right = 0, n - 1, 0, n - 1
+        cur = 1
+        while left <= right and top <= bottom:
+            for i in range(left, right + 1):
+                ans[top][i] = cur
+                cur += 1
+            top += 1
+            if top > bottom: break
+            
+            for i in range(top, bottom + 1):
+                ans[i][right] = cur
+                cur += 1
+            right -= 1
+            if right < left: break
+            
+            for i in range(right, left - 1, -1):
+                ans[bottom][i] = cur
+                cur += 1
+            bottom -= 1
+            if bottom < top: break
+            
+            for i in range(bottom, top - 1, -1):
+                ans[i][left] = cur
+                cur += 1
+            left += 1
+            
+        return ans
+ 
