@@ -1,0 +1,25 @@
+######Input: nums = [2,3,1,1,4]
+###Output: true
+###Explanation: Jump 1 step from index 0 to 1, then 3 steps to the last index.
+
+##判断第一个数能否蹦几次蹦到最后的位置
+
+###思路：
+#我们使用一个变量reach保存当前能到达的最后位置索引，那么在每个位置的时候判断这个位置能不能到达，
+#即位置的索引大于了reach说明前面无论怎么走也走不到这个位置，就返回False好了。
+#如果这个位置可以到达，那么要维护一下这个reach，更新策略是当前位置索引+这个数字代表的能向右走多少步，这个代表了到达当前位置的时候向右能到达的最远距离，
+#在这个最远距离以内的任何位置都能到，因为每次跳的步数可以变小的。那么进行了这么一次循环以后，每个位置都判断为能到达，所以结果返回True就好了。
+
+
+class Solution(object):
+    def canJump(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: bool
+        """
+        reach = 0
+        for i, num in enumerate(nums):    ##enumerate将其组成一个索引序列，利用它可以同时获得索引（index）和值
+            if i > reach:
+                return False
+            reach = max(reach, i + num)  ###i+num是我在这个位置能达到的最远距离
+        return True
