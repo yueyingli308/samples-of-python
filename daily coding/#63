@@ -1,0 +1,23 @@
+###题目：
+###给出了一个m * n的地图，上面有个机器人位于左上角，现在他想到达右下角。但是这个地图某些位置可能有障碍物。
+###它每次只能向右边或者下边走一步，问能到达右下角的方式有多少种。
+
+####dynamic programming思路：
+#第一行第一列的所有方式只有1种，到达其他位置的方式是这个位置上面 + 这个位置左边
+#注意需要判断某个位置是不是有障碍物，如果有障碍物，那么到达这个地方的方法是0。
+
+class Solution:
+    def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -> int:
+        
+        m, n = len(obstacleGrid), len(obstacleGrid[0])
+        dp = [[0] * (n + 1) for _ in range(m + 1)]
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+                if obstacleGrid[i - 1][j - 1] == 1:  ##左上方有“1”的障碍物，则不管向下还是向右都过不来了
+                    dp[i][j] = 0
+                else:
+                    if i == j == 1:  ###第一行第一列的所有方式只有1种
+                        dp[i][j] = 1  ###返回的是len(m,n),从1开始，所以是从（1，1）开始的
+                    else:
+                        dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
+        return dp[m][n] ###返回的是len(m,n),从1开始，所以上面也是这么设置的
