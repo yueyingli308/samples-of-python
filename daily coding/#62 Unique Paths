@@ -1,0 +1,46 @@
+####The robot can only move either down or right at any point in time. The robot is trying to reach the bottom-right corner of the grid (marked 'Finish' in the diagram below).
+
+####How many possible unique paths are there?
+
+#1.数学公式：
+##在总数为m + n - 2中的数目中挑选n - 1个位置放竖着的走。也就是我们说的C(m + n - 2)(n -1)的问题。
+
+def uniquePaths(self, m: int, n: int) -> int:
+        ###思路
+        
+        ##公式 C (m,n) = n!/m!*(m-n)!
+        total = m + n - 2
+        v = n - 1
+        def permutation(m, n):
+            son = 1
+            for i in range(m, m - n, -1):
+                son *= i
+            mom = 1
+            for i in range(n, 0, -1):  ##不包括0！！
+                mom *= i
+            return son / mom
+        return int(permutation(total, min(v, total -v)))   ###⚠️这个很重要的一个点是取的(v, total -v)最小值！！！！
+        
+        
+#2.动态规划：
+###思路：
+###第一行第一列的所有方式只有1种，到达其他位置的方式是这个位置上面 + 这个位置左边，即是之前步骤的加和。
+class Solution(object):
+    def uniquePaths(self, m, n):
+        """
+        :type m: int
+        :type n: int
+        :rtype: int
+        """
+        dp = [[0] * n for _ in range(m)]
+        for i in range(m):
+            dp[i][0] = 1
+        for i in range(n):
+            dp[0][i] = 1
+        for i in range(1, m):
+            for j in range(1, n):
+                dp[i][j] = dp[i][j - 1] + dp[i - 1][j]
+        return dp[m - 1][n - 1]
+
+
+        
