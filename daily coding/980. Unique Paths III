@@ -1,0 +1,45 @@
+#题目描述：
+#1 表示起始方格。且只有一个起始方格。
+#2 表示结束方格，且只有一个结束方格。
+#0 表示我们可以走过的空方格。
+#-1 表示我们无法跨越的障碍。
+#返回在四个方向（上、下、左、右）上行走时，从起始方格到结束方格的不同路径的数目，每一个无障碍方格都要通过一次。
+
+
+###解题思路
+###暴力法破解。我们首先需要找到开始和结束的位置，同时计算所有位置为0的数量（也就是我们必须要走的步数）。
+###接下来问题就很简单了，就是通过dfs，边界条件是：
+## 1. 所有位置都访问过了
+## 2. 到达终点了
+
+class Solution:
+    def uniquePathsIII(self, grid: List[List[int]]) -> int:
+        if not grid or not grid[0]:
+            return 0
+        
+        start, end, p = None, None, 1        #p是非障碍的格子数目
+        row, col = len(grid), len(grid[0])
+        for i in range(row):
+            for j in range(col):
+                if grid[i][j] == 1:
+                    start = i, j
+                elif grid[i][j] == 2:
+                    end = i, j
+                elif grid[i][j] == 0:
+                    p += 1
+###解题思路
+###暴力法破解。我们首先需要找到开始和结束的位置，同时计算所有位置为0的数量（也就是我们必须要走的步数）。
+###接下来问题就很简单了，就是通过dfs，边界条件是：
+## 1. 所有位置都访问过了
+## 2. 到达终点了            
+        def dfs(x, y, p):
+            if not (0 <= x < row and 0 <= y < col and grid[x][y] >= 0):
+                return 0
+            if end == (x, y) and p == 0:
+                return 1
+            grid[x][y] = -1
+            res = dfs(x+1, y, p-1) + dfs(x, y+1, p-1) + dfs(x-1, y, p-1) + dfs(x, y-1, p-1)
+            grid[x][y] = 0  ##这里是为了保证之后回过去dfs func时，if判断grid[x][y] >= 0通过！！！
+            return res
+        
+        return dfs(start[0], start[1], p)
