@@ -37,7 +37,7 @@ class Solution:
                 return 0
             if end == (x, y) and p == 0:
                 return 1
-            grid[x][y] = -1
+            grid[x][y] = -1   #注意：在进行DFS时先将遍历到的该点进行标记，当函数结束时需要将该标记点还原。
             res = dfs(x+1, y, p-1) + dfs(x, y+1, p-1) + dfs(x-1, y, p-1) + dfs(x, y-1, p-1)
             grid[x][y] = 0  ##这里是为了保证之后回过去dfs func时，if判断grid[x][y] >= 0通过！！！
             return res
