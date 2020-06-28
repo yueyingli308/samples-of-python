@@ -1,0 +1,58 @@
+###Leetcode 39: Combination Sum
+###Given a set of candidate numbers (candidates) (without duplicates) and a target number (target), 
+###find all unique combinations in candidates where the candidate numbers sums to target.
+
+###Example
+#Input: candidates = [2,3,5], target = 8,
+#A solution set is:
+#[
+#  [2,2,2,2],
+#  [2,3,3],
+#  [3,5]
+#]
+
+
+#####这道题目的解题思路是，通过 sorted 函数先对候选数字的list进行排序，然后再使用递归的方法来获取各个解。
+###详细的解构：http://laker.me/blog/2019/02/23/19_0223_leetcode_39/
+
+class Solution:
+    def Solver(self, res, path, candidates, target, idx):
+        for i in range(idx, len(candidates)):
+            new_target = target - candidates[i]
+            if new_target < 0:
+                return
+            else:
+                if new_target == 0:
+                    res.append(path + [candidates[i]])
+                else:
+                    self.Solver(res, path + [candidates[i]], candidates,
+                                new_target, i)
+ 
+    def combinationSum(self, candidates, target):
+        """
+        :type candidates: List[int]
+        :type target: int
+        :rtype: List[List[int]]
+        """
+        path = []
+        res = []
+        candidates = sorted(candidates)
+        self.Solver(res, path, candidates, target, 0)
+        return res
+  
+
+
+
+###或者 Leetcode提交的
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        ######用回溯/dfs的方法：
+        
+        candidates, res, stack, lenth=sorted(set(candidates)), [], [(0, [], target)], len(candidates)
+        while stack:
+            i, temp, tar=stack.pop()
+            while i<lenth and tar>0:
+                if candidates[i]==tar: res+=temp+[candidates[i]],
+                stack+=(i, temp+[candidates[i]], tar-candidates[i]),
+                i+=1
+        return res
