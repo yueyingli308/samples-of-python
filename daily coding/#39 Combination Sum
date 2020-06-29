@@ -20,13 +20,13 @@ class Solution:
         for i in range(idx, len(candidates)):
             new_target = target - candidates[i]
             if new_target < 0:
-                return
+                return          ###说明这个排列组合是无法加和为target的，return空
             else:
                 if new_target == 0:
-                    res.append(path + [candidates[i]])
+                    res.append(path + [candidates[i]])     ##排列组合成立
                 else:
                     self.Solver(res, path + [candidates[i]], candidates,
-                                new_target, i)
+                                new_target, i)          ### 继续累加
  
     def combinationSum(self, candidates, target):
         """
@@ -50,7 +50,7 @@ class Solution:
         
         candidates, res, stack, lenth=sorted(set(candidates)), [], [(0, [], target)], len(candidates)
         while stack:
-            i, temp, tar=stack.pop()
+            i, temp, tar=stack.pop()     ##pop() 函数用于移除列表中的一个元素（默认最后一个元素），并且返回该元素的值。
             while i<lenth and tar>0:
                 if candidates[i]==tar: res+=temp+[candidates[i]],
                 stack+=(i, temp+[candidates[i]], tar-candidates[i]),
