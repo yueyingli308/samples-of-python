@@ -1,0 +1,40 @@
+##### Description
+##### 给定一个字符串数组，将字母异位词组合在一起。字母异位词指字母相同，但排列不同的字符串。
+示例:
+输入: [“eat”, “tea”, “tan”, “ate”, “nat”, “bat”],
+输出: [ [“ate”,”eat”,”tea”], [“nat”,”tan”], [“bat”] ]
+
+
+def groupAnagrams(strs):
+        ###  颠倒字母而成的字（anagram的复数形式）；（用复数）字谜
+        res = {}
+        for item in strs:
+            k = ''.join(sorted(item))  # 注意：字符串排序,拆分每个单词的字母并排列 -> *****找字母相同的单词放在一组，主要思路点在拆分单词的字母并排序，相同的放在一组！！！！！！
+            print(k)   #####只为测试code！！！！！！！
+            if k not in res:  # 判断是否存在
+                res[k] = []
+            res[k].append(item)  # 相同字符串放到同一个字典 k中
+            print(res) #####只为测试code！！！！！！！
+        return [res[x] for x in res]  # 输出结果
+        
+        
+ ####  run code:
+ 
+strs = ["eat","tea","tan","ate","nat","bat"]   
+groupAnagrams(strs)
+
+
+Output:
+aet
+{'aet': ['eat']}
+aet
+{'aet': ['eat', 'tea']}
+ant
+{'aet': ['eat', 'tea'], 'ant': ['tan']}
+aet
+{'aet': ['eat', 'tea', 'ate'], 'ant': ['tan']}
+ant
+{'aet': ['eat', 'tea', 'ate'], 'ant': ['tan', 'nat']}
+abt
+{'aet': ['eat', 'tea', 'ate'], 'ant': ['tan', 'nat'], 'abt': ['bat']}
+[['eat', 'tea', 'ate'], ['tan', 'nat'], ['bat']]
