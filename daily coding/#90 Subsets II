@@ -1,0 +1,39 @@
+给定一个可能包含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。
+
+说明：解集不能包含重复的子集。
+
+示例:
+
+输入: [1,2,2]
+输出:
+[
+  [2],
+  [1],
+  [1,2,2],
+  [2,2],
+  [1,2],
+  []
+]
+################解法：
+
+class Solution:
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        res = []
+        nums.sort()
+        self.dfs(nums, 0, res, [])
+        return res
+    
+    def dfs(self, nums, index, res, path):
+        if path not in res:
+            res.append(path)
+        for i in range(index, len(nums)):
+            if i > index and nums[i] == nums[i - 1]:
+                continue     ###跳过相同的重复数值：// 去重：如果当前数与上次递归的数字相同，continu
+                ###########这里要思考一下：删除的是枚举过程中的前后重复数字，例如：【1，2，2】 -》开始【1，2】 之后1和第三位数【1，2】再次枚举就重复了
+                
+            self.dfs(nums, i + 1, res, path + [nums[i]])    ###nums[i]也要变为【】一个list才能和path直接相加
+            
+            
+####https://blog.csdn.net/fuxuemingzhu/article/details/79785548
+#####视频 3种解法讲解 https://www.bilibili.com/s/video/BV1eE411d7EY
+   
