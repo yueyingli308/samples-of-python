@@ -1,0 +1,57 @@
+#####题目讲解
+
+548. Split Array with Equal Sum (Medium)
+Given an array with n integers, you need to find if there are triplets (i, j, k) which satisfies following conditions:
+
+0 < i, i + 1 < j, j + 1 < k < n - 1
+Sum of subarrays (0, i - 1), (i + 1, j - 1), (j + 1, k - 1) and (k + 1, n - 1) should be equal.
+where we define that subarray (L, R) represents a slice of the original array starting from the element indexed L to the element indexed R.
+
+Example:
+
+Input: [1,2,1,2,1,2,1]
+Output: True
+Explanation:
+i = 1, j = 3, k = 5. 
+sum(0, i - 1) = sum(0, 0) = 1
+sum(i + 1, j - 1) = sum(2, 2) = 1
+sum(j + 1, k - 1) = sum(4, 4) = 1
+sum(k + 1, n - 1) = sum(6, 6) = 1
+
+
+
+####思路
+解法1: 暴力法，那就是三重循环，时间复杂度是O(n^3)，空间复杂度是O(n)。过不了大数据, TLE。
+
+解法2: 采用空间换时间，从中间进行分割，然后在前半部分进行搜索，看看是不是可以找到和相同的划分，如果找到了，就将和加入哈希表中；然后再在后半部分进行搜索，如果找到了和相同的划分并且该和也存在于哈希表中，这说明找到了合适的i，j，k，可以将数组划分为和相同的四个部分，返回true。这样时间复杂度就降低成了O(n^2)。
+
+解法3: 建立一个长度为数组长度的sum[i]，然后计算出每一个位置的它前面所有数字的和，这样就避免了以后大量的重复计算和的运算。然后计算i-j是否有满足1-i的和等于i-j, 有的话存到set里，避免重复计算。然后在计算位置k，是否也等于之前set里的值，如果有就返回True.
+
+解法4: 用数组sums记录前n项和，在用字典idxs统计sums元素对应的下标列表，根据sums和idxs枚举满足(0, i - 1) == (i + 1, j - 1)条件的i，j。利用字典jlist记录子数组和对应的j值列表。最后遍历k，枚举jlist中子数组和(k + 1, n - 1)对应的j值，然后判断是否存在 (j + 1, k - 1) 与 (k + 1, n - 1) 相等
+
+def splitArray(self, nums):     ####解法3
+        """
+        :type nums: List[int]
+        :rtype: bool
+        """
+        size = len(nums)
+        sums = [0] * (size + 1)
+        for x in range(size):
+            sums[x + 1] += sums[x] + nums[x]    ###提前算出从位置0到每个位置的累加和preSum，这样区间[i-1, j]的和 = preSum[j] - preSum[i - 1];
+ 
+        idxs = collections.defaultdict(list)   #使用list作第一个参数，可以很容易将键-值对序列转换为列表字典
+        for x in range(size):
+            idxs[sums[x + 1]].append(x)
+         
+        jlist = collections.defaultdict(list)
+        for i in range(1, size):
+            for j in idxs[2 * sums[i] + nums[i]]:
+                if i < j < size:
+                    jlist[sums[i]].append(j + 1)
+         
+        for k in range(size - 2, 0, -1):
+            for j in jlist[sums[size] - sums[k + 1]]:
+                if j + 1 > k: continue
+                if sums[k] - sums[j + 1] == sums[size] - sums[k + 1]:    ##sum(j + 1, k - 1) ？= sum(k + 1, n - 1)
+                    return True
+        return False　　
