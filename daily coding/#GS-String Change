@@ -1,0 +1,40 @@
+Q2 : Construct a string with gievn constraints:
+input: abcd
+const: 123
+o/p: abbcccd
+
+input: abcde
+const: 4
+o/p: aaaabcde
+
+also decode in the same manner
+
+eg:
+i/p: aabbbccccd
+const:2341
+o/p: abcd
+
+######Solution
+
+With JAVA
+
+public static void main(String[] args){
+        String s="abcd";
+        int num=2341;
+        String num1=Integer.toString(num);
+        String[] nums=num1.split("");
+        String result="";
+
+        for(int i=1;i<nums.length;i++){
+            for(int j=1;j<=Integer.parseInt(nums[i]);j++){
+                result=result+s.charAt(i-1);
+            }
+        }   
+        System.out.println(result);     
+    }
+    
+With PYTHON
+
+def repeatstring(string,const):
+  res = ""
+  for i in range(1,len(
