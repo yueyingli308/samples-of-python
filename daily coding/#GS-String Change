@@ -35,6 +35,14 @@ public static void main(String[] args){
     
 With PYTHON
 
-def repeatstring(string,const):
-  res = ""
-  for i in range(1,len(
+def compress(string,const):
+    res = ''
+    for i in range(0,len(const)):
+        j = 0
+        while j <int(const[i]):
+            res += string[i]
+            j += 1
+            
+    if len(string)>len(const):
+        res += string[len(const):]
+    return res  
