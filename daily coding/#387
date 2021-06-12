@@ -1,0 +1,56 @@
+Given a string, find the first non-repeating character in it and return it’s index. If it doesn’t exist, return -1.
+
+Examples:
+
+s = "leetcode"
+return 0.
+
+s = "loveleetcode",
+return 2.
+
+
+################# solution ###################
+首先做个字符出现次数的统计，然后再次遍历，找出只出现了一次的第一个字符。
+
+class Solution:
+    def firstUniqChar(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        count = collections.Counter(s)       ####统计每个字母的对应出现的次数
+        for i, c in enumerate(s):   #i--位置，c--具体的数列值
+            if count[c] == 1:
+                return i
+        return -1
+————————————————
+版权声明：本文为CSDN博主「负雪明烛」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/fuxuemingzhu/article/details/84139374
+
+
+
+############# Solution ##################
+代码2
+先将所有字符出现的次数统计出来，再重新遍历原字符串中的字符，直到发现一个字符只出现一次，返回其下标。下面的代码用字典统计。
+
+class Solution(object):
+    def firstUniqChar(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        letters = {}
+        for c in s:
+            letters[c] = letters[c] + 1 if c in letters else 1
+        for i in xrange(len(s)):
+            if letters[s[i]] == 1:
+                return i
+        return -1
+————————————————
+版权声明：本文为CSDN博主「coder_orz」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/coder_orz/article/details/52387946
+
+
+
+######################总结########################
+看到有关 字符串里的字符是否有重复问题，应该寻求dictionary的帮助，
