@@ -1,0 +1,67 @@
+Each time the knight is to move, it chooses one of eight possible moves uniformly at random (even if the piece would go off the chessboard) and moves there.
+
+The knight continues moving until it has made exactly K moves or has moved off the chessboard. Return the probability that the knight remains on the board after it has stopped moving.
+
+Example:
+
+Input: 3, 2, 0, 0
+Output: 0.0625
+Explanation: There are two moves (to (1,2), (2,1)) that will keep the knight on the board.
+From each of those positions, there are also two moves that will keep the knight on the board.
+The total probability the knight stays on the board is 0.0625.
+ 
+
+Note:
+
+N will be between 1 and 25.
+K will be between 0 and 100.
+The knight always initially starts on the board.
+题解：
+类似Out of Boundary Paths.
+
+DP问题. 求最后在board上的概率. 反过来想，走完K步棋子在board上的哪个位置呢. 反过来走, 看board上所有位置走完K步后能到初始位置(r,c)的数目和.
+
+储存历史信息是走到当前这步时棋盘上能走到每个位置的不同走法.
+
+递推时, 向所有方向移动, 若是还在board上就把自己的走法加到新位置的走法上.
+
+初始化所有位置只有1种走法.
+
+答案K步之后到初始位置的走法除以Math.pow(8,K).
+
+Time Complexity: O(K*N^2).
+
+Space: O(N^2).
+
+
+
+
+class Solution(object):
+    def knightProbability(self, N, K, r, c):
+        """
+        :type N: int
+        :type K: int
+        :type r: int
+        :type c: int
+        :rtype: float
+        """
+        class Solution:
+    def knightProbability(self, n: int, k: int, row: int, column: int) -> float:
+        dp = [[1 for i in range(n)] for j in range(n)]
+        #dp[row][column] = 1
+        directions = [(1, 2), (1, -2), (2, 1), (2, -1), (-2, 1), (-2, -1), (-1, 2), (-1, -2)]
+        for a in range(k):
+            new_dp = [[0 for i in range(n)] for j in range(n)]
+            for i in range(n):
+                for j in range(n):
+                    for d in directions:
+                        x, y = i + d[0], j + d[1]
+                        if x < 0 or x >= n or y < 0 or y >= n:
+                            continue
+                        new_dp[i][j] += dp[x][y]
+            dp = new_dp
+        #####return sum(map(sum, dp)) / float(8 ** k)
+        return dp[row][column]/float(8**k)
+
+有一定的更改⬆️
+原文链接：https://blog.csdn.net/fuxuemingzhu/article/details/82747623
