@@ -1,0 +1,55 @@
+Your are given an array of positive integers nums.
+
+Count and print the number of (contiguous) subarrays where the product of all the elements in the subarray is less than k.
+
+Example 1:
+
+Input: nums = [10, 5, 2, 6], k = 100
+Output: 8
+Explanation: The 8 subarrays that have product less than 100 are: [10], [5], [2], [6], [10, 5], [5, 2], [2, 6], [5, 2, 6].
+Note that [10, 5, 2] is not included as the product of 100 is not strictly less than k.
+
+Note:
+
+0 < nums.length <= 50000.
+0 < nums[i] < 1000.
+0 <= k < 10^6.
+题目大意
+找出一个数组中连续子数组的乘积有多少个小于k的。
+】
+
+#################Python#####################
+
+class Solution(object):
+    def numSubarrayProductLessThanK(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+        N = len(nums)
+        prod = 1
+        l, r = 0, 0
+        res = 0
+        while r < N:
+            prod *= nums[r]
+            while l <= r and prod >= k:       ###注意保持l<=r
+                prod /= nums[l]
+                l += 1
+            res += r - l + 1.    ####这里注意不是只加1，而是包含了nums[right]的所有数组合
+            r += 1
+        return res
+————————————————
+版权声明：本文为CSDN博主「负雪明烛」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/fuxuemingzhu/article/details/83047699
+
+
+
+
+思路说明
+相当于是一种滑动窗口的解法，维护一个数字乘积刚好小于k的滑动窗口，用变量 left 来记录其左边界的位置，右边界i就是当前遍历到的位置。
+遍历原数组，用 prod 乘上当前遍历到的数字，然后进行 while 循环，如果 prod 大于等于k，则滑动窗口的左边界需要向右移动一位，删除最左边的数字，那么少了一个数字，乘积就会改变，
+所以用 prod 除以最左边的数字，然后左边右移一位，即 left 自增1。
+当确定了窗口的大小后，就可以统计子数组的个数了，就是窗口的大小。为啥呢，比如 [5 2 6] 这个窗口，k还是 100，右边界刚滑到6这个位置，这个窗口的大小就是包含6的子数组乘积小于k的个数，即 [6], [2 6], [5 2 6]，正好是3个。
+所以窗口每次向右增加一个数字，然后左边去掉需要去掉的数字后，窗口的大小就是新的子数组的个数，每次加到结果 res 中即。
+
