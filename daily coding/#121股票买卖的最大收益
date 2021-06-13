@@ -1,0 +1,22 @@
+题目大意
+可以在某一天买股票，在之后卖股票，求最大收益。
+实际上，一次循环就可以求出结果。在遍历的过程中，用一个变量保存目前为止最小的数，用当前的数与目前最小的数相减，判断这个差与此前得到的最大收益的大小，取较大值更新最大收益。
+
+#本题对计算速度有一定要求
+
+class Solution(object):
+    def maxProfit(self, prices):
+        """
+        :type prices: List[int]
+        :rtype: int
+        """
+        if not prices: return 0
+        minPrice = float('inf')
+        profit = 0
+        for price in prices:
+            minPrice = min(minPrice, price)
+            profit = max(profit, price - minPrice)
+        return profit
+————————————————
+版权声明：本文为CSDN博主「负雪明烛」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/fuxuemingzhu/article/details/51291151
