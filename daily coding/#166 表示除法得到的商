@@ -1,0 +1,50 @@
+解题的关键是当余数开始循环时，得数也会开始循环。
+
+你需要用一个哈希表存储：key = 余数， value = 当前数位在小数得数中的位置。一旦找到重复的余数，就可以通过查找哈希表获得循环节的起点，从而得到小数的循环节。
+
+执行除法的过程中，余数可能变为0。此时说明小数是有限小数，可以立即返回得数。
+
+与问题Divide Two Integers类似，需要注意负数和极限情况，例如-2147483648 / -1
+
+
+  ######简略版答案
+  ##这里用到一个函数：divmod函数是Python的内置函数，它可以把除数和余数运算结果结合起来，返回一个包含商和余数的元组(a // b, a % b)
+  
+    def fractionToDecimal(self, numerator, denominator):
+        """
+        :type numerator: int
+        :type denominator: int
+        :rtype: str
+        """
+                #符号问题
+        if numerator == 0: return "0"
+        d = dict()
+        ans = "-" if ((numerator > 0) ^ (denominator > 0)) else ""
+        numerator, denominator = abs(numerator), abs(denominator)
+                
+                #商结果的小数点前情况
+        div, mod = divmod(numerator, denominator)
+        if mod == 0: return ans + str(div)  #整除了的情况
+        
+        ans += str(div) + "."
+        d[mod] = len(ans)
+        while mod:
+            mod *= 10     #写除法计算式时，余数后加‘0’来继续初
+            
+            div, mod = divmod(mod, denominator)
+            ans += str(div)
+            if mod in d:
+                index = d[mod]  #这里相当于是记录了小数值开始循环的指针位置
+                ans = ans[:index] + "(" + ans[index:] + ")"
+                break
+            else:
+                d[mod] = len(ans)
+        return ans
+————————————————
+
+###总结 
+通过dic来记录、比较并找到 循环出现的数字组，
+通过平时写的除数公式来理解磁体的方法，关键在于当余数开始循环时，得数也会开始循环，以此保存每次的余数数值来进行比较
+记录除数的位点也很重要这里，第一次出现循环后就开始察觉到，之后查找key获得循环节的起点，从而得到小数的循环节
+
+原文链接：https://blog.csdn.net/fuxuemingzhu/article/details/82533218
