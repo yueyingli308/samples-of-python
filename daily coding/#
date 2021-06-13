@@ -1,0 +1,55 @@
+【LeetCode】153. Find Minimum in Rotated Sorted Array 
+
+题目地址：https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/description/
+
+题目描述：
+Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand.
+
+(i.e., 0 1 2 4 5 6 7 might become 4 5 6 7 0 1 2).
+
+Find the minimum element.
+
+You may assume no duplicate exists in the array.
+
+题目大意
+找出旋转有序数组中的最小值。
+
+
+########## solution 1 #############
+自己写的解法：
+
+def findMin(self, nums: List[int]) -> int:
+        j = 1
+        while j<len(nums):
+            if nums[j]>nums[0]:
+                print(nums[j])
+                j +=1
+            else:
+                break     ##一定注意写上break来终止循环！！！！，类似双指针的方法
+
+        return nums[j] if j != len(nums) else nums[0]
+        
+        
+       
+######## Solution 2 ##############
+#用的是二分法，本质是找到一个最小数！！！
+
+class Solution(object):
+    def findMin(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        low, high = 0, len(nums) - 1
+        while low < high:
+            mid = (low + high) / 2
+            if nums[mid] <= nums[high]: #min位于左侧上升沿
+                high = mid
+            else: #min位于左侧上升沿与右侧上升沿之间
+                low = mid + 1
+        return nums[low]
+
+
+————————————————
+版权声明：本文为CSDN博主「负雪明烛」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/fuxuemingzhu/article/details/79533470
