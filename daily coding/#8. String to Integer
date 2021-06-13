@@ -1,0 +1,41 @@
+思路方法
+通过试错可以总结出要注意的四个点：
+
+输入字符串为空、或其他不合法情况，返回0；
+字符串开头的空格要在预处理中删掉；
+处理可能出现的正负号“+”，“-”，正负号只能出现一次；
+超出整数范围的值取整数范围的边界值。
+思路一
+按照上面要注意的点，比较可读的解法如下。
+
+代码
+
+class Solution(object):
+    def myAtoi(self, str):
+        """
+        :type str: str
+        :rtype: int
+        """
+        if not str:
+            return 0
+        str = str.strip()  ###先把前面的 空格 类删除
+                          #str.strip()就是把字符串str的头和尾的空格，以及位于头尾的\n \t之类给删掉。 另外两种类似的方法lstrip()和rstrip()，分别是只删左侧的和只删右侧的
+        number, flag = 0, 1
+        if str[0] == '-':
+            str = str[1:]
+            flag = -1
+        elif str[0] == '+':
+            str = str[1:]
+        for c in str:
+            if c >= '0' and c <= '9':  #直接挑出来代表’数字‘的字母
+                                       #这里确实要注意化繁为简的思路，只管‘数字型’字母，其他的直接跳过
+                number = 10*number + ord(c) - ord('0')
+            else:
+                break  ######这里因为题目要求是必须以空格/-/+开头的才可以开始计入位数字，所以以字母打头的默认return位0
+        number = flag * number
+        number = number if number <= 2147483647 else 2147483647
+        number = number if number >= -2147483648 else -2147483648
+        return number
+————————————————
+版权声明：本文为CSDN博主「coder_orz」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/coder_orz/article/details/52053932
