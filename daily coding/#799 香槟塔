@@ -1,0 +1,86 @@
+Example 1:
+
+Input: poured = 1, query_glass = 1, query_row = 1
+Output: 0.0
+Explanation: We poured 1 cup of champange to the top glass of the tower (which is indexed as (0, 0)). There will be no excess liquid so all the glasses under the top glass will remain empty.
+
+Example 2:
+
+Input: poured = 2, query_glass = 1, query_row = 1
+Output: 0.5
+Explanation: We poured 2 cups of champange to the top glass of the tower (which is indexed as (0, 0)). There is one cup of excess liquid. The glass indexed as (1, 0) and the glass indexed as (1, 1) will share the excess liquid equally, and each will get half cup of champange.
+
+Note:
+
+poured will be in the range of [0, 10 ^ 9].
+query_glass and query_row will be in the range of [0, 99].
+
+题目大意
+往香槟塔最上面一层导入一定体积的香槟酒，求香槟塔每个位置杯子里的香槟体积。
+
+解题方法
+动态规划
+这题使用类似动态规划的解法，需要解决的问题是从上一层的酒杯递推求出该层每个位置的酒的体积。
+
+可以做以下思考：首先我们计算每个酒杯如果在没有往下分流的情况下，它会有多少体积的酒。然后分析这一层酒杯的酒如果满了，那么会流到哪里去？显然会均匀的流向下一层的两个相邻的杯子里去。
+
+所以我们使用100 * 100的矩阵模拟每层的杯子，第一层的第一个杯子初始体积是倒入的酒的体积poured，然后向下递推，递推的方式下一层对应序号和下一层对应序号+1的两个杯子均分当前杯子超过1的部分。注意使用的是+=号，也就是下一层杯子的酒的体积是来自当前层流到里面酒体积的累加。
+
+最后返回的时候需要再次判断，我们dp保存的是流经的液体的体积，不是真实的体积，所以和1取个最小值。
+
+这题关键词： 二维数组，保存流经杯子的体积，只流到下一层相邻的两个杯子里，杯子液体体积累加。
+
+本来使用的i遍历到N - 1即最后一层才结束，其实直接递推到题目要求的query_row就行了，后面的那些杯子不用管。
+
+时间复杂度是O(N^2)，空间复杂度是O(100*100).
+
+class Solution(object):
+    def champagneTower(self, poured, query_row, query_glass):
+        """
+        :type poured: int
+        :type query_row: int
+        :type query_glass: int
+        :rtype: float
+        """
+        N = 100
+        dp = [[0] * N for _ in range(N)]
+        dp[0][0] = poured
+        for i in range(query_row):   #只计算到query的行，题目里基本上是一定会倒到这一行的
+            for j in range(i + 1):
+                if dp[i][j] > 1:
+                    dp[i + 1][j    ] += max((dp[i][j] - 1),0) / 2.0       #反方向想，当前酒杯里的酒是从上层的2个杯子倒掉自身的’1‘得到的，最后return时和1比大小
+                    dp[i + 1][j + 1] += (dp[i][j] - 1) / 2.0
+        return min(1, dp[query_row][query_glass])
+————————————————
+版权声明：本文为CSDN博主「负雪明烛」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/fuxuemingzhu/article/details/83444553
+
+
+
+
+
+
+
+##### 如果每层的香槟是一样的平均分 （但是和LC799的题意不符！注意理解题意！！！！！）
+class Solution:
+    def champagneTower(self, poured: int, query_row: int, query_glass: int) -> float:
+        dp = [[0 for i in range(100)] for j in range(100)]
+        #dp[0][0] == 1
+        
+        if poured <=1:
+            return float(dp[query_row][query_glass])
+        
+        for i in range(100):
+            if poured-(i+1) >0:
+                for j in range(0,i+1):
+                    dp[i][j]=1
+                    poured -= dp[i][j]
+                    
+            else:
+                split = poured/(i+1)
+                for j in range(0,i+1):
+                    dp[i][j] = split
+                break
+            
+        print(dp)        
+        return float(dp[query_row][query_glass])
