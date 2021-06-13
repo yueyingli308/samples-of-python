@@ -1,0 +1,76 @@
+Given an array of strings, group anagrams together.
+
+Example:
+
+Input: ["eat", "tea", "tan", "ate", "nat", "bat"],
+
+Output:
+[
+  ["ate","eat","tea"],
+  ["nat","tan"],
+  ["bat"]
+]
+
+
+
+
+对字符串进行排序，同样的字符串聚集在一起，用列表保存在一起就好了。
+
+class Solution(object):
+    def groupAnagrams(self, strs):
+        """
+        :type strs: List[str]
+        :rtype: List[List[str]]
+        """
+        res = collections.defaultdict(list)    #####collections.defaultdict()用在，要生成一个字典，但是又没有默认值的情况，可以使用它来生成一个默认值，而不发生keyerror报错。
+        for string in strs:
+            sorted_str = ''.join(sorted(string))   #######拆分字母后按照字母表排序组合,sorted()可以直接用在str上
+            res[sorted_str].append(string)
+        return res.values()
+————————————————
+版权声明：本文为CSDN博主「负雪明烛」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/fuxuemingzhu/article/details/69831375
+
+
+
+############## function说明   ################
+这个函数展开来写应该是str.join(item)，join函数是一个字符串操作函数
+
+str表示字符串（字符），item表示一个成员，注意括号里必须只能有一个成员，比如','.join('a','b')这种写法是行不通的
+
+举个例子：
+
+
+','.join('abc')
+
+上面代码的含义是“将字符串abc中的每个成员以字符','分隔开再拼接成一个字符串”，输出结果为：
+
+'a,b,c'
+
+join里放列表、元组、字典也是可以的
+
+';'.join([a,b,c])
+>>  'a;b;c'
+
+#### collections.defaultdict #####
+collections.defaultdict()用在，要生成一个字典，但是又没有默认值的情况，可以使用它来生成一个默认值，而不发生keyerror报错。
+
+#########  不用collections.defaultdict，直接用dict的方法 ###############
+class Solution:
+    def groupAnagrams(self, strs):
+        res = {}
+        for item in strs:
+            k = ''.join(sorted(item))  # 字符串排序
+            if k not in res:  # 判断是否存在
+                res[k] = []
+            res[k].append(item)  # 相同字符串放到同一个字典 k中
+        return [res[x] for x in res]  # 输出结果
+
+
+if __name__ == '__main__':
+    strs = ['eat', 'tea', 'tan', 'ate', 'nat', 'bat']
+    solu = Solution()
+    print(solu.groupAnagrams(strs))
+————————————————
+版权声明：本文为CSDN博主「GrowthDiary007」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/XX_123_1_RJ/article/details/81145095
