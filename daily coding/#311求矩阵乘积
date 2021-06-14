@@ -1,0 +1,94 @@
+题目地址：https://leetcode-cn.com/problems/sparse-matrix-multiplication/
+
+题目描述
+Given two sparse matrices A and B, return the result of AB.
+
+You may assume that A’s column number is equal to B’s row number.
+
+Example:
+
+Input:
+
+A = [
+  [ 1, 0, 0],
+  [-1, 0, 3]
+]
+
+B = [
+  [ 7, 0, 0 ],
+  [ 0, 0, 0 ],
+  [ 0, 0, 1 ]
+]
+
+Output:
+
+     |  1 0 0 |   | 7 0 0 |   |  7 0 0 |
+AB = | -1 0 3 | x | 0 0 0 | = | -7 0 3 |
+                  | 0 0 1 |
+给定两个 稀疏矩阵 A 和 B，请你返回 AB。你可以默认 A 的列数等于 B 的行数。
+
+
+####### 解法1 ##################
+
+Time:  O(m * n * l), A is m x n matrix, B is n x l matrix
+# Space: O(m * l)
+class Solution(object):
+    def multiply(self, A, B):
+        """
+        :type A: List[List[int]]
+        :type B: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        m, n, l = len(A), len(A[0]), len(B[0])
+        res = [[0 for _ in xrange(l)] for _ in xrange(m)].     #提前设定了0，所以在后面可以只判断if A[i][k]:
+        for i in xrange(m):
+            for k in xrange(n):
+                if A[i][k]:
+                    for j in xrange(l):
+                        res[i][j] += A[i][k] * B[k][j]
+        return res　
+        
+        
+        
+        
+############### 解法2：暴力 ############
+
+这边主要讲一下怎么做矩阵乘法。假设我们有矩阵A，B，结果是C，那么
+
+C[i][k] += A[i][j]*B[j][k]    #！！！！！！！！！！
+
+从矩阵乘法的维度变化来考虑就可以理解了。
+遍历的顺序不重要，下面几种都是ok的
+
+class Solution:
+    def multiply(self, A: List[List[int]], B: List[List[int]]) -> List[List[int]]:
+        ans = [[0]*len(B[0]) for _ in range(len(A))]
+        
+        # for i in range(len(A)):
+        #     for j in range(len(A[0])):
+        #         for b_j in range(len(B[0])):
+        #             ans[i][b_j] += A[i][j]*B[j][b_j]
+        
+        for i in range(len(A)):
+            for b_i in range(len(B)):
+                for b_j in range(len(B[0])):
+                ns[i][b_j] += A[i][b_i]*B[b_i][b_j]
+        
+        return ans
+        
+原文链接：https://blog.csdn.net/qq_37821701/article/details/108821029
+
+########解法3 直接用np 的计算 ########
+
+import numpy as np
+class Solution(object):
+    def multiply(self, A, B):
+        """
+        :type A: List[List[int]]
+        :type B: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        a = np.array(A)
+        b = np.array(B)
+        return np.matmul(a, b)
+
