@@ -1,0 +1,67 @@
+问题描述：
+207. 课程表
+现在你总共有n门课需要选，记为0到n-1。
+
+在选修某些课程之前需要一些先修课程。 例如，想要学习课程0，你需要先完成课程1，我们用一个匹配来表示他们: [0,1]
+
+给定课程总量以及它们的先决条件，判断是否可能完成所有课程的学习？
+
+示例 1:
+
+输入: 2, [[1,0]]
+输出: true
+解释: 总共有 2 门课程。学习课程 1 之前，你需要完成课程 0。所以这是可能的。
+
+示例 2:
+
+输入: 2, [[1,0],[0,1]]
+输出: false
+解释: 总共有 2 门课程。学习课程 1 之前，你需要先完成​课程 0；并且学习课程 0 之前，你还应先完成课程 1。这是不可能的。
+
+问题分析：
+解决方法：
+
+（1）使用图的深度优先搜索，从一个点从发，深度搜索每一条路径。
+
+（2） 对每次走过的路径顶点，进行标记，说明已经走过。
+
+（3）如果当前顶点，已经被标记走过了，则表示有回路，否则继续深度前行。
+
+（4）在回溯的过程中，要对当前顶点，重新标记，即，没走过。
+
+（5）特别注意 的一点，要记得剪枝情况，如果访问一个点，从这个点从发可以得到正确的解，那些下次再次访问到这个点的时候，将不再继续向下搜索。
+如果不进行剪枝，提交会超时。所以可以对访问过的顶点，设置三个标志。
+
+Python3实现：
+# @Time   :2018/12/04
+# @Author :LiuYinxing
+# 深度优先搜索
+
+
+class Solution:
+    def canFinish(self, numCourses, prerequisites):
+        
+        graph = [[] for _ in range(numCourses)]
+        visit = [0 for _ in range(numCourses)]
+        for x, y in prerequisites:  # 转换成邻接表的形式
+            graph[x].append(y)
+
+        def dfs(graph, v):  # 从顶点v 出发深度优先搜索图G，判断图中是否存在回路
+            visit[v] = -1  # 访问过标记
+
+            for w in graph[v]:  # 遍历 v 的邻接点
+                if visit[w] == -1: return False  # 如果w已经访问过，必存在回路，直接返回即可
+                if visit[w] == 1: continue  # 剪枝
+
+                if not dfs(graph, w): return False  # 如果从w出发，发现回路，则返回（进入递归调用）
+
+            visit[v] = 1  # 被访问过，从这个点从发得到的结果是正确的，标记1，避免下次继续访问，剪枝情况
+            return True
+
+        for v in range(numCourses):
+            if not dfs(graph, v):
+                return False
+        return True
+————————————————
+版权声明：本文为CSDN博主「GrowthDiary007」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/XX_123_1_RJ/article/details/84787393
