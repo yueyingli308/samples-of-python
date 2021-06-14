@@ -1,0 +1,110 @@
+在歌曲列表中，第 i 首歌曲的持续时间为 time[i] 秒。
+
+返回其总持续时间（以秒为单位）可被 60 整除的歌曲对的数量。形式上，我们希望索引的数字  i < j 且有 (time[i] + time[j]) % 60 == 0。
+
+ 
+
+示例 1：
+
+输入：[30,20,150,100,40]
+输出：3
+解释：这三对的总持续时间可被 60 整数：
+(time[0] = 30, time[2] = 150): 总持续时间 180
+(time[1] = 20, time[3] = 100): 总持续时间 120
+(time[1] = 20, time[4] = 40): 总持续时间 60
+示例 2：
+
+输入：[60,60,60]
+输出：3
+解释：所有三对的总持续时间都是 120，可以被 60 整数。
+ 
+
+提示：
+
+1 <= time.length <= 60000
+1 <= time[i] <= 500
+第一种思路：
+
+两种循环暴力法，太慢了过不了最后一个case。
+
+class Solution(object):
+    def numPairsDivisibleBy60(self, time):
+        """
+        :type time: List[int]
+        :rtype: int
+        """
+        res = 0
+        for i in range(0, len(time) - 1):
+            for j in range(i + 1, len(time)):
+                # print time[i], time[j]
+                if (time[i] + time[j]) % 60 == 0:     
+                    res += 1
+                    
+        return res。     ###弃用#####
+
+
+
+第二种思路：
+按照题意，每个数其实等价于它自身 mod 60的结果，所以可以用一个下标从0 - 59 的数组记录一下对应的原始数字的个数。
+
+record[ time[i] % 60 ] += 1。
+
+然后线性扫描， 对于time里的每个数字，在运算前先把自己这一次减掉: record[temp] -= 1， 这是为了避免重复以及满足题目条件 j > i。然后再加上需要的数字（60 - temp）的个数。
+
+一个特殊情况是，如果temp = 0， 因为余数不会出现60的情况， 无法按上一行的算法进行计算，比如[60, 60, 60]， 
+但根据中学数学排列组合的思想不难得知， 如果有N个这样的数，那么它们之间任意地取两个共有C(N,2) = N * (N - 1) /2 种取法，所以一次计算就可以处理所有的该种情况的数字
+
+
+class Solution(object):
+    def numPairsDivisibleBy60(self, time):
+        """
+        :type time: List[int]
+        :rtype: int
+        """
+        record = [0 for _ in range(0, 60)]
+        for index, item in enumerate(time):
+            record[item % 60] += 1
+        
+        res = 0
+        for i in range(0, len(time)):
+            temp = time[i] % 60
+ 
+            if temp:
+                record[temp] -= 1.  ###这里代表time[i]代表的数字已经和其他所有可能的数字组过了cp，所以把我这个可能性量减去，后面的数再遇到需要和我的余数组cp的计算的数目减去我
+                res += record[60 - temp]
+            elif temp == 0 and record[0] > 1:
+                # print res, record[0]
+                # 5 4+3 +2 +1
+                res += record[0] * (record[0] - 1) // 2
+                record[0] = 0
+          return res
+ 
+
+————————————————
+版权声明：本文为CSDN博主「暴躁老哥在线刷题」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/qq_32424059/article/details/88664635
+
+
+
+还有一种更好的做法，我们可以将所有的time进行time%60，这样我们数的区间就变成了[0,60]，这样的话我们就不用遍历[1,17]了，彻底将这个问题变成了两数和问题。
+
+from collections import Counter
+class Solution:
+    def numPairsDivisibleBy60(self, time: List[int]) -> int:
+        cnt = Counter()  #一个 Counter 是一个 dict 的子类，用于计数可哈希对象。 
+                          #它是一个集合，元素像字典键(key)一样存储，它们的计数存储为值。 计数可以是任何整数值，包括0和负数。 Counter 类有点像其他语言中的bags或multisets。
+        res = 0
+        for t in time:
+            res += cnt[-t % 60]。  #trick这里要额外注意，是一个数学变换，相当于cnt[(60-t%60)%60]
+            cnt[t % 60] += 1 ##count数目是累加的，相当于看该数的前面有几个余数相补的，也可以用list来表示
+        return res
+！！！！！！
+上面写法使用了trick，更明确的表述应该是cnt[(60-t%60)%60]（为何不是cnt[(60-t%60)]？例如t=180，显然我们需要的区间在[0,59]）。
+————————————————
+版权声明：本文为CSDN博主「coordinate_blog」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/qq_17550379/article/details/88633878
+
+
+————————————————
+版权声明：本文为CSDN博主「暴躁老哥在线刷题」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/qq_32424059/article/details/88664635
