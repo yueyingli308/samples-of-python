@@ -1,0 +1,78 @@
+138. Copy List with Random Pointer 解题报告（Python）
+
+题目地址：https://leetcode.com/problems/copy-list-with-random-pointer/description/
+
+题目描述
+A linked list is given such that each node contains an additional random pointer which could point to any node in the list or null.
+
+Return a deep copy of the list.
+
+题目大意
+复制一个复杂链表，这个复杂链表是指出了值和next指针外，还有一个random指针可能指向任何位置的链表节点或空。
+
+解题方法
+这个题是剑指Offer的“面试题26：复杂链表的复制"""
+# Definition for a Node.
+class Node(object):
+    def __init__(self, val, next, random):
+        self.val = val
+        self.next = next
+        self.random = random
+"""
+class Solution(object):
+    def copyRandomList(self, head):
+        """
+        :type head: Node
+        :rtype: Node
+        """
+        nodeDict = dict()
+        dummy = Node(0, None, None)
+        nodeDict[head] = dummy
+        newHead, pointer = dummy, head
+        while pointer:
+            node = Node(pointer.val, pointer.next, None)
+            nodeDict[pointer] = node
+            newHead.next = node
+            newHead, pointer = newHead.next, pointer.next
+        pointer = head
+        while pointer:
+            if pointer.random:
+                nodeDict[pointer].random = nodeDict[pointer.random]
+             pointer = pointer.next
+        return dummy.next
+————————————————
+版权声明：本文为CSDN博主「负雪明烛」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/fuxuemingzhu/article/details/80787528
+
+
+############### 思路2 ##################
+
+这里只写一种思路：链表的拷贝其实可以看做两个步骤，一个是节点数据的拷贝，另一个是节点关系的拷贝。我们也可以先把所有的节点进行拷贝，并存入字典中。
+然后遍历链表并拷贝两个指针。因为任意指针可能指向空指针，所以在字典中添加一个空指针项。
+
+代码
+class Solution(object):
+    def copyRandomList(self, head):
+        """
+        :type head: RandomListNode
+        :rtype: RandomListNode
+        """
+        if not head:
+            return None
+        visited = dict()
+        # 复制值
+        node = head
+        while node:
+            visited[node] = RandomListNode(node.label)
+            node = node.next
+
+        # 给一个空值
+        visited[None] = None
+
+        # 复制关系
+        node = head
+        while node:
+            visited[node].next = visited[node.next]
+            visited[node].random = visited[node.random]
+            node = node.next
+        return visited[head]
