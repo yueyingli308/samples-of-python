@@ -26,10 +26,10 @@ class Solution(object):
         self.dfs(nums, 0, res, [])
         return res
     
-    def dfs(self, nums, index, res, path):
+    def dfs(self, nums, index, res, path):          #输入的数据，从哪里开始，定义返回变量名字，返回值是多少
         res.append(path)
         for i in xrange(index, len(nums)):
-            self.dfs(nums, i + 1, res, path + [nums[i]])
+            self.dfs(nums, i + 1, res, path + [nums[i]])  
 ————————————————
 版权声明：本文为CSDN博主「负雪明烛」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
 原文链接：https://blog.csdn.net/fuxuemingzhu/article/details/79359540
