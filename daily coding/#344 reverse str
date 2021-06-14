@@ -1,0 +1,40 @@
+题目翻译
+写一个函数，输入一个字符串，输出其反转字符串。
+例如：输入“hello”，输出“olleh”。
+
+思路方法
+
+#####思路一
+利用Python的字符串操作。
+
+代码
+
+class Solution(object):
+    def reverseString(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        return s[::-1]
+
+#######思路二
+依次交换前面和后面的字符直至中间字符，完成反转。需要注意Python不能直接修改字符串的某一位，所以需要先转成字符串数组再处理。该思路也用双指针实现。
+
+代码
+
+class Solution(object):
+    def reverseString(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        s = list(s)
+        for i in xrange(0, len(s)/2):
+            tmp = s[i]          ####借助了第三方的tmp var来作为中间桥梁
+            s[i] = s[len(s)-1-i]
+            s[len(s)-1-i] = tmp
+
+        return ''.join(s)
+————————————————
+版权声明：本文为CSDN博主「coder_orz」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/coder_orz/article/details/51337797
