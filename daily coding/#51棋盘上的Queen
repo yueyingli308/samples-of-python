@@ -1,0 +1,47 @@
+#解题思路：这类型问题统称为递归回溯问题，也可以叫做对决策树的深度优先搜索（dfs）。N皇后问题有个技巧的关键在于棋盘的表示方法，这里使用一个数组就可以表达了。
+比如board=[1, 3, 0, 2]，这是4皇后问题的一个解，意思是：在第0行，皇后放在第1列；在第1行，皇后放在第3列；在第2行，皇后放在第0列；在第3行，皇后放在第2列。这道题提供一个递归解法，下道题使用非递归。check函数用来检查在第k行，皇后是否可以放置在第j列。
+
+这个题最好的做法还是回溯法。怎么个思路呢？我们只需要一个一维数组，含义是第i行放在了哪一列上，如果这行没有放，那么就设置成默认值-1。
+现在我们需要使用回溯法，对第row行进行放置（前row-1行已经放置好了）。如果第row行放在第col列成功了，就继续搜索第row+1行，否则就回溯放到第col+1列试试。
+
+
+Given an integer n, return all distinct solutions to the n-queens puzzle.
+
+Each solution contains a distinct board configuration of the n-queens' placement, where 'Q' and '.' both indicate a queen and an empty space respectively.
+
+题意的要求简单来说就是在一个8*8的棋盘上摆上8个棋子，使它们不在同一行、同一列、同一斜线上。这题是一个很经典的问题。难点在问题的描述。
+这里我们使用一个数组board,board中元素下标代表第几行，元素值board[i]代表第i行Queen摆放的位置。下面来看这三个约束条件：
+
+1.不同行：这个自然满足，数组board下标不同
+
+2不同列：这个只要使board中各元素值不相同就行了。即board[i]!=board[j]
+
+3.不同斜线：这个只要使board中元素相应的横纵坐标差的绝对值不等就行了。即|board[i]-board[j]|!=|i-j|   ---->行➖行，列-列
+
+下面利用深度搜索即可。
+————————————————
+class Solution:
+    def solveNQueens(self, n: int) -> List[List[str]]:
+        def check(k,j):
+            for i in range(k):
+                if board[i]==j or abs(board[i]-j)==abs(k-i):   ##### board[i]代表之前放过了Q的格子是哪一列
+                   
+                  #相应|X1-X2|=|Y1-Y2|
+                    return False
+            return True
+        def dfs(depth,valuelist):       ####dfs的设置,第几行，改行的层层累加结果
+            if depth == n:
+                res.append(valuelist)
+                return                  #！！！！！！在这里直接写上‘return’！！！！！#
+            else:
+                for i in range(n):      ###2. 否则就回溯放到第col+1列试试
+                    if check(depth,i):
+                        board[depth]=i
+                        s='.'*n
+                        dfs(depth+1,valuelist+[s[:i]+'Q'+s[i+1:]])    ###1.如果第row行放在第col列成功了，就继续搜索第row+1行
+        
+        ######单独设置universe var
+        res=[]
+        board = [0 for i in range(n)]
+        dfs(0,[])
+        return res
