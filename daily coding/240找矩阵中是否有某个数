@@ -1,0 +1,49 @@
+问题描述：
+240. 搜索二维矩阵 II
+编写一个高效的算法来搜索m x n矩阵matrix中的一个目标值target。该矩阵具有以下特性：
+
+每行的元素从左到右升序排列。
+每列的元素从上到下升序排列。
+
+示例:
+
+现有矩阵 matrix 如下：
+
+[
+  [1,   4,  7, 11, 15],
+  [2,   5,  8, 12, 19],
+  [3,   6,  9, 16, 22],
+  [10, 13, 14, 17, 24],
+  [18, 21, 23, 26, 30]
+]
+
+给定target = 5，返回 true。
+给定 target = 20，返回 false。
+
+############### 重要的是这里的分析！！！ ##################3
+问题分析：
+（1）明白一点，这个矩阵是，从左上角向右下角排序的。
+（2）思路，我们可以从左下角向右上角，依次探查。
+（3）如果，矩阵当前位置的数值大于目标值target，很显然，向上移动 一行就可以了，因为右边的数一定大于目标值了。
+（4）如果，矩阵当前位置的数值小于目标值target，很显然，向右移动一个就可以了。
+
+Python3实现：
+class Solution:
+    def searchMatrix(self, matrix, target):
+
+        if not matrix: return False  # 为空返回false
+
+        row, col, width = len(matrix) - 1, 0, len(matrix[0])
+        while row >= 0 and col < width:
+            if matrix[row][col] == target:  # 找到 返回true
+                return True
+            elif matrix[row][col] > target:
+                row = row - 1  # 进入上一行
+            else:
+                col = col + 1  # 进行右一列
+        return False  # 没找到 返回false
+
+
+————————————————
+版权声明：本文为CSDN博主「GrowthDiary007」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/XX_123_1_RJ/article/details/81625334
