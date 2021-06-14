@@ -47,3 +47,37 @@ class Solution:
                  result.append(intervals[i])  #两个intervals不重叠，例：[8,10],[15,18]
             i += 1
         return result
+        
+##########网上解析
+
+class Solution:
+    def merge(self, intervals):
+        """
+        :type intervals: List[Interval]
+        :rtype: List[Interval]
+        """
+        if len(intervals) <= 1: return intervals
+
+        intervals.sort(key=lambda x: x.start)  # 按照第一个关键字，从小到大排序
+
+        res = [intervals[0]]  # 定义结果列表，并把第一个元素放进去
+
+        for i, e in enumerate(intervals, start=1):  # 依次添加新元素，并考虑重叠问题
+            if e.start <= res[-1].end:
+                res[-1].end = max(res[-1].end, e.end)  # 合并. （通过更改最后的数字）      
+                ！！！！！！！！！！！!!!!⬆️ 注意可以利用res我们一步步加进去的心res结果！！！！！！
+            else:
+                res.append(e)
+        return res
+
+if __name__ == '__main__':
+
+    solu = Solution()
+    intervals = [Interval(1, 4), Interval(0, 4)]
+    print([[e.start, e.end] for e in solu.merge(intervals)])
+————————————————
+版权声明：本文为CSDN博主「GrowthDiary007」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/XX_123_1_RJ/article/details/84320632
+————————————————
+版权声明：本文为CSDN博主「GrowthDiary007」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/XX_123_1_RJ/article/details/84320632
