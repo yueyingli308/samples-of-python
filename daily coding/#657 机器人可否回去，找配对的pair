@@ -1,0 +1,33 @@
+复数求和
+Python支持复数运算的，所以指定不同的方向是不同的实数数字就行了。复数的标记是j。最后求和判断是不是0就是到了原点。
+
+时间复杂度是O(n)，空间复杂度是O(1).
+
+class Solution:
+    def judgeCircle(self, moves):
+        """
+        :type moves: str
+        :rtype: bool
+        """
+        directs = {'L':-1, 'R':1, 'U':1j, 'D':-1j}
+        return 0 == sum(directs[move] for move in moves)
+
+counter统计次数
+显而易见，回到原点的要求是向上走的次数和向下走的次数相等，并且向左和向右走的次数相等。直接字符串统计判断是否哦相等，很快就写出来。
+
+时间复杂度是O(n)，空间复杂度是O(1).
+
+class Solution:
+    def judgeCircle(self, moves):
+        """
+        :type moves: str
+        :rtype: bool
+        """
+        count = collections.Counter(moves)
+        return count['U'] == count['D'] and count['L'] == count['R']
+
+
+
+————————————————
+版权声明：本文为CSDN博主「负雪明烛」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/fuxuemingzhu/article/details/83663650
