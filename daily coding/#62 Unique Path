@@ -1,0 +1,21 @@
+##### 注意这里是求的到达的路径总数！ 
+
+def uniquePaths(m,n) -> int:
+    pd = [ [0] *n for i in range(m)]
+
+    for i in range(m):
+        for j in range(n):
+            if i==0 and j==0:
+                before = 1
+            elif i-1<0:
+                before = pd[i][j-1]
+            elif j-1<0:
+                before = pd[i-1][j]
+            else:
+                before = pd[i][j-1]+pd[i-1][j]  ###数目取决于左/上方两格的加总！
+
+            pd[i][j] += before
+    print(pd)
+
+    return pd[m-1][n-1]
+
