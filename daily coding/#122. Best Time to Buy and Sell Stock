@@ -1,0 +1,19 @@
+def maxProfit(self, prices: List[int]) -> int:
+      if len(prices) <= 1:
+          return 0
+
+      total = 0
+      i = 1
+      while i<len(prices):
+          if prices[i-1] <= prices[i]:
+              total += prices[i] - prices[i-1]   ####因为有if是否有正收益这一条件筛选，所以可以i+=1这样跳
+          i+=1
+
+      return total
+                
+########### 解析 #############                
+for i in range(1,len(prices)):
+            if prices[i] > prices[i-1]:
+                total  += prices[i] - prices[i-1]   ###这里的一个逻辑是一直大的累加是得到了max-min
+                ####直到遇到一个比最大数小的就停止 很聪明！！！！
+        return total
