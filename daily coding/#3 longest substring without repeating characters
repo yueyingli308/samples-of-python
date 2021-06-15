@@ -1,0 +1,47 @@
+题目描述
+Given a string, find the length of the longest substring without repeating characters.
+
+Example 1:
+
+Input: "abcabcbb"
+Output: 3 
+Explanation: The answer is "abc", which the length is 3.
+————————————————
+
+题目大意
+找出字符串中最长的不含有重复字符的子串长度。
+
+解题方法
+看见题目求长度的，一般时间复杂度都不会太高。
+
+解法一：虫取法+set
+所谓虫取法，就是根据某个条件交替移动前后指针，使得在双指针之内的这部分是满足题意要求的。
+
+具体思路比较简单易懂，使用双指针，[left, right]双闭区间来保存子串的左右区间，对应着这个区间我们维护一个set，这个set里面全部是不重复的字符。
+
+使用while循环，如果right字符不在set中，就让它进去；如果right在，就把left对应的字符给remove出去。
+
+所以，当我们得到一个right位置的字符时，通过移动left和修改[left,right]区间内对应的的set，来保持了一个最小的不重复字符区间。这里需要注意的是，移动left的次数不一定就是1次，因为我们要保证left和right之间没有重复字符，而新添加的right字符出现的位置不一定刚刚就是left指向的位置。
+————————————————
+class Solution(object):
+    def lengthOfLongestSubstring(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        left, right = 0, 0
+        chars = set()
+        res = 0
+        while left < len(s) and right < len(s):
+            if s[right] in chars:
+                if s[left] in chars:
+                    chars.remove(s[left])
+                left += 1
+            else:
+                chars.add(s[right])
+                right += 1
+                res = max(res, len(chars))
+        return res
+————————————————
+版权声明：本文为CSDN博主「负雪明烛」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/fuxuemingzhu/article/details/82022530
