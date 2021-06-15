@@ -21,7 +21,8 @@ Explanation: The answer is "abc", which the length is 3.
 
 使用while循环，如果right字符不在set中，就让它进去；如果right在，就把left对应的字符给remove出去。
 
-所以，当我们得到一个right位置的字符时，通过移动left和修改[left,right]区间内对应的的set，来保持了一个最小的不重复字符区间。这里需要注意的是，移动left的次数不一定就是1次，因为我们要保证left和right之间没有重复字符，而新添加的right字符出现的位置不一定刚刚就是left指向的位置。
+所以，当我们得到一个right位置的字符时，通过移动left和修改[left,right]区间内对应的的set，来保持了一个最小的不重复字符区间。
+这里需要注意的是，移动left的次数不一定就是1次，因为我们要保证left和right之间没有重复字符，而新添加的right字符出现的位置不一定刚刚就是left指向的位置。
 ————————————————
 class Solution(object):
     def lengthOfLongestSubstring(self, s):
@@ -30,7 +31,7 @@ class Solution(object):
         :rtype: int
         """
         left, right = 0, 0
-        chars = set()
+        chars = set()               ### set用的是 remove(),add()
         res = 0
         while left < len(s) and right < len(s):
             if s[right] in chars:
@@ -45,3 +46,26 @@ class Solution(object):
 ————————————————
 版权声明：本文为CSDN博主「负雪明烛」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
 原文链接：https://blog.csdn.net/fuxuemingzhu/article/details/82022530
+
+
+####### 自己写的本方法
+def lengthOfLongestSubstring(s) -> int:
+    
+    res = 0
+    for i in range(len(s)):
+        j =i
+        leng = 0
+        lis = []        ##注意保存出现过的自负的list在for循环里记得每次清空
+        while j<len(s):
+            if s[j] not in lis:
+                leng +=1
+                lis.append(s[j])
+                j+=1
+                print(lis,leng)
+            else:
+
+                break
+        #res.append(leng)
+        res = max(res,leng)
+        print(res)
+    return res
