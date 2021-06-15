@@ -1,0 +1,42 @@
+215. Kth Largest Element in an Array
+
+Find the kth largest element in an unsorted array. Note that it is the kth largest element in the sorted order, not the kth distinct element.
+
+Example 1:
+
+Input: [3,2,1,5,6,4] and k = 2
+Output: 5
+
+题目大意
+找出数组中第k大的值。
+
+解题方法
+方法一：移除最大值
+找出第k大的数字。这个题可以直接排序，速度还挺快。我的做法是通过循环k-1次，每次都在列表中去除列表的最大值。注意，列表的remove每次只会移除一个值
+
+
+class Solution(object):
+    def findKthLargest(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+        for i in range(k - 1):
+            nums.remove(max(nums))
+        return max(nums)
+
+
+方法二：排序
+排序之后直接找倒数第k个数字即可。
+
+class Solution {
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+        sort(nums.begin(), nums.end());
+        return nums[nums.size() - k];
+    }
+};
+————————————————
+版权声明：本文为CSDN博主「负雪明烛」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/fuxuemingzhu/article/details/79264797
