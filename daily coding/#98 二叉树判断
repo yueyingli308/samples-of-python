@@ -1,0 +1,49 @@
+题目大意
+判断一棵树是不是a valid binary search tree (BST).
+
+解题方法
+递归
+很显然，二叉树的题目可以使用递归进行解决。
+
+根据BST的定义，左子树的值要在(min,mid)之间，右子树的值在(mid,max)之间，这个mid值并不是中位数而是当前节点的值。
+
+定义一个辅助函数，要给这个辅助函数传入当前要判断的节点，当前要判断的这个节点的取值下限和取值上限。然后使用递归即可，
+每次要计算下一个节点的时候都要根据这个节点是左孩子还是右孩子对其取值的区间进行更新。
+
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def isValidBST(self, root):
+        """
+        :type root: TreeNode
+        :rtype: bool
+        """
+        return self.valid(root, float('-inf'), float('inf'))    开始以‘inf'来设置为min，max
+        
+    def valid(self, root, min, max):
+        if not root: return True
+        if root.val >= max or root.val <= min:
+            return False
+        return self.valid(root.left, min, root.val) and self.valid(root.right, root.val, max)
+————————————————
+版权声明：本文为CSDN博主「负雪明烛」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/fuxuemingzhu/article/details/70209865
+
+使用DFS遍历树，遍历的时候向下传上下界，根据上下界判断是否符合要求
+
+代码
+class Solution:
+    def isValidBST(self, root: TreeNode) -> bool:
+        def check(root, l, r):
+            if root == None:
+                return True
+            val = root.val
+            if val <= l or val >= r:
+                return False
+            return check(root.left, l, val) and check(root.right, val, r)
+        return check(root, float('-inf'), float('inf'))
