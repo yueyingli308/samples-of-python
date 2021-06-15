@@ -20,3 +20,41 @@ def two_sum(lst, k):
             return True
         seen.add(num)
     return False
+    
+  ############### return具体的位置 
+  
+  ##Sol
+  class Solution(object):
+    def twoSum(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
+        """
+        N = len(nums)
+        pos = dict()
+        for i, num in enumerate(nums):
+            if target - num in pos:
+                return [pos[target - num], i]
+            else:
+                pos[num] = i        ##记录下每个list中数字的位置
+        return [0, 0]
+
+
+## Sol 
+class Solution(object):
+    def twoSum(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
+        """
+        dic = {}
+        for i, num in enumerate(nums):
+            dic[num] = i
+        for i, num in enumerate(nums):
+            if target - num in dic and dic[target - num] != i:
+                return [i, dic[target - num]]
+————————————————
+版权声明：本文为CSDN博主「负雪明烛」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/fuxuemingzhu/article/details/72465759
