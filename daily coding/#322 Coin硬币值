@@ -16,9 +16,9 @@ class Solution(object):
         dp = [float('inf')] * (amount + 1)
         dp[0] = 0
         for coin in coins:
-            for i in range(coin, amount + 1):
+            for i in range(coin, amount + 1):         ####### 遍历数思路是给定一个固定的硬币值，金额数1元1元累加，来看可能得到的总金额，相当于思维导图的一行一行看
                 if dp[i - coin] != float('inf'):
-                    dp[i] = min(dp[i], dp[i - coin] + 1)
+                    dp[i] = min(dp[i], dp[i - coin] + 1)          #### 实时更新min
         return -1 if dp[amount] == float('inf') else dp[amount]
 ————————————————
 版权声明：本文为CSDN博主「负雪明烛」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
@@ -26,4 +26,39 @@ class Solution(object):
 
 
 
-########## 也有dfs的方法
+########## 也有bfs的方法
+BFS广度优先搜索解法
+将问题转化为求X轴0点到坐标点amount的最短距离（每次向前行进的合法距离为coin的面值）
+
+class Solution(object):
+    def coinChange(self, coins, amount):
+        """
+        :type coins: List[int]
+        :type amount: int
+        :rtype: int
+        """
+        if amount == 0:
+            return 0
+        value1 = [0]
+        value2 = []
+        nc =  0
+        visited = [False]*(amount+1)
+        visited[0] = True
+        while value1:
+            nc += 1
+            for v in value1:
+                for coin in coins:
+                    newval = v + coin               
+            ############## newval的值三种情况来考虑：############
+                    if newval == amount:
+                        return nc         ###本题找min,第一个到达amount的就是了
+                    elif newval > amount:
+                        continue
+                    elif not visited[newval]:
+                        visited[newval] = True
+                        value2.append(newval)
+            value1, value2 = value2, []               ###类似枚举，把每一个存储进去的value都遍历一遍
+        return -1
+————————————————
+版权声明：本文为CSDN博主「小鹅鹅」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/asd136912/article/details/79080693
