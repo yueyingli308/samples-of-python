@@ -1,0 +1,45 @@
+一.问题描述
+Determine whether an integer is a palindrome. An integer is a palindrome when it reads the same backward as forward.
+
+Example 1:
+
+Input: 121
+Output: true
+
+————————————————
+自己写的
+class Solution:
+  def isPalindrome(self, x: int) -> bool:
+      if x<0:
+          return False
+      res = []
+      while x>= 10:     ##while的条件开始写反了，注意！
+          res.append(x%10)
+          x = x//10
+      res.append(x)
+
+      i,j = 0,len(res)-1
+      while i<= j:
+          if res[i] != res[j]:
+              return False
+          else:
+              i += 1
+              j -= 1
+      return True
+      
+  ####### 网上参考
+  def isPalindrome(self, x):
+        """
+        :type x: int
+        :rtype: bool
+        """
+        if x < 0: return False
+        x = str(x)          直接转化成str,后面的思路相同！
+        N = len(x)
+        for i in range(N / 2):
+            if x[i] != x[N - 1 - i]:
+                return False
+        return True
+————————————————
+版权声明：本文为CSDN博主「负雪明烛」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/fuxuemingzhu/article/details/71334663
