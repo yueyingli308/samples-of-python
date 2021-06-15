@@ -1,0 +1,51 @@
+Reverse a singly linked list.
+
+Example:
+
+Input: 1->2->3->4->5->NULL
+Output: 5->4->3->2->1->NULL
+1
+2
+Follow up:
+
+A linked list can be reversed either iteratively or recursively. Could you implement both?
+
+题目大意
+翻转单链表。
+
+解题方法
+迭代
+迭代解法，每次找出老链表的下一个结点，插入到新链表的头结点，这样就是一个倒着的链。
+
+举例说明：
+
+old->3->4->5->NULL
+new->2->1
+然后把3插入到new的后边，会变成：
+old->4->5->NULL
+new->3->2->1
+
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def reverseList(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        if head == None or head.next == None:
+            return head
+        newHead = None
+        while head != None:
+            temp = head.next
+            head.next = newHead    #新链表放后一位
+            newHead = head      #旧头放在新list头处
+            head = temp     #head.next后面的变成old list
+        return newHead
+————————————————
+版权声明：本文为CSDN博主「负雪明烛」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/fuxuemingzhu/article/details/51290121
