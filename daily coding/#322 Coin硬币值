@@ -26,7 +26,7 @@ class Solution(object):
 
 
 
-########## 也有bfs的方法
+########## 也有BFS的方法 （类似 横向枚举）
 BFS广度优先搜索解法
 将问题转化为求X轴0点到坐标点amount的最短距离（每次向前行进的合法距离为coin的面值）
 
@@ -38,7 +38,7 @@ class Solution(object):
         :rtype: int
         """
         if amount == 0:
-            return 0
+            return 0 
         value1 = [0]
         value2 = []
         nc =  0
