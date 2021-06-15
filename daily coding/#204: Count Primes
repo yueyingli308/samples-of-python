@@ -1,0 +1,15 @@
+从上面的厄拉多塞筛法可以看出，我们只需遍历[2,],因为超过部分如果不是素数，则作为因子在前面的数已经被删除了。同时这里利用了python里list的特性[::i]取i的倍数。
+
+def countPrimes(self, n):
+    if n < 3:
+        return 0
+    primes = [True] * n
+    primes[0] = primes[1] = False
+    for i in range(2, int(n ** 0.5) + 1):
+        if primes[i]:
+            primes[i * i: n: i] = [False] * len(primes[i * i: n: i])
+            ### [i * i: n: i] ---> 从i*i 到 n，每次跳过i过格子
+    return sum(primes)
+————————————————
+版权声明：本文为CSDN博主「二当家的掌柜」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/github_39261590/article/details/73864039
