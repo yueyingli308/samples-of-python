@@ -1,0 +1,26 @@
+题目大意
+实现x的n次方的函数。
+
+递归
+主要是注意n的正负，这个题比较简单了，直接递归调用就行。如果n是负数，那么相当于求 (1/x)^(-n)。如果n是奇数，那么结果需要单独乘以 x，否则就相当于求(x^2)^(n/2)，一直递归下去即可。
+
+时间复杂度是O(1)，空间复杂度是O(1)。我认为这个代码是O(1)，因为n只有32位，循环次数是有上限的常数。
+
+class Solution(object):
+    def myPow(self, x, n):
+        """
+        :type x: float
+        :type n: int
+        :rtype: float
+        """
+        if n == 0:
+            return 1
+        if n < 0:
+            x = 1 / x
+            n = -n
+        if n % 2:
+            return x * self.myPow(x, n - 1)
+        return self.myPow(x * x, n / 2)       #直接返回自己定义的self.myPow函数！
+————————————————
+版权声明：本文为CSDN博主「负雪明烛」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/fuxuemingzhu/article/details/82960833
