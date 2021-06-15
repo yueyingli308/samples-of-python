@@ -3,31 +3,31 @@ Given a string containing just the characters ‘(’, ‘)’, ‘{’, ‘}’
 
 The brackets must close in the correct order, “()” and “()[]{}” are all valid but “(]” and “([)]” are not.
 
+注意example的设置：
+Example 4:
+
+Input: s = "([)]"
+Output: false
+Example 5:
+
+Input: s = "{[]}"   #必须是左然后右，成对成对的消灭
+Output: true
+
 题目大意
 有三种括号组成的字符串，看最后的结果是否能组成正常的括号。
 ————————————————
 Python，使用的也是栈。
 
-class Solution(object):
-    def isValid(self, s):
-        """
-        :type s: str
-        :rtype: bool
-        """
-        stack = []
+def isValis(self, s):
+        parentheses = {"(": ")", "[": "]", "{": "}"}
+
+        stack = []   # Array Implementation of stack，加一个空list来储存s里的左括号
+
         for c in s:
-            if not stack:
-                stack.append(c)
+            if c in parentheses:
+                stack.append(c) # Push in stack
             else:
-                if c in ['(', '[', '{']:
-                    stack.append(c)
-                else:
-                    top = stack.pop()
-                    if (top == '(' and c != ')') or \
-                        (top == '[' and c != ']') or \
-                        (top == '{' and c != '}'):
-                        return False
+                if not stack or parentheses[stack.pop()] != c:  # "]"
+                    return False
+
         return not stack
-————————————————
-版权声明：本文为CSDN博主「负雪明烛」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
-原文链接：https://blog.csdn.net/fuxuemingzhu/article/details/72366868
