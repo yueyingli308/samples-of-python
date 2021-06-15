@@ -1,5 +1,7 @@
 题目大意
 翻转字符串里面的单词。同时去掉多余的空格。
+Input: "the sky is blue"
+Output: "blue is sky the"
 
 解题方法
 字符串操作直接放弃 C++ ，一般都选择 Python。建议大家刷题的时候会 Python。
@@ -16,7 +18,17 @@ class Solution:
     def reverseWords(self, s: str) -> str:
         return " ".join(s.split()[::-1])
         
-        return " ".join(s.split()[::-1]).  ####
+        ######### 解释！ ################
+        return " ".join(s.split()[::-1]).  #### s.split()成一个有word的list，[::-1]把单词倒置
+        
+        另一个更详细但略有不同的步骤
+        rs=s[::-1] #将整个字符串反转
+        l=rs.split() #将反转后的字符串通过split()函数进行分割，产生的单词发在列表l中
+        ls=[word[::-1] for word in l] #使用列表解析，反转列表l中的每一个单词
+        return ' '.join(ls)  #使用join()函数，将列表ls中的单词，通过空格连接成一个字符串
+————————————————
+版权声明：本文为CSDN博主「快递小可」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/sxingming/article/details/51597524
 ————————————————
 版权声明：本文为CSDN博主「负雪明烛」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
 原文链接：https://blog.csdn.net/fuxuemingzhu/article/details/80810249
