@@ -1,0 +1,67 @@
+You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.
+
+You may assume the two numbers do not contain any leading zero, except the number 0 itself.
+
+Example:
+
+Input: (2 -> 4 -> 3) + (5 -> 6 -> 4)
+Output: 7 -> 0 -> 8
+Explanation: 342 + 465 = 807.
+1
+2
+3
+题目大意
+有两个链表，分别是逆序了的十进制数字。现在要求两个十位数字的和，要求返回的结果也是链表。
+
+
+————————————————
+了比较笨的办法，先遍历两个链表，将链表的值取反，然后相加，再取反，再构建新的链表。
+
+取反和求和的时候反复将数据类型在int和str之间转换，感觉过于繁琐。
+
+最后构造新的链表的时候用到了p，可以理解为一个指针。
+
+网上还有其他方法直接在链表中求和进位，感觉回比这种方法效率更高。
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+ 
+class Solution:
+    
+    def addTwoNumbers(self, l1, l2):
+        """
+        :type l1: ListNode
+        :type l2: ListNode
+        :rtype: ListNode
+        """
+        result = 0
+        str_l1_value = str()
+        str_l2_value = str()
+        while l1 != None:
+            value = str(l1.val)
+            l1 = l1.next
+            str_l1_value = str_l1_value + value
+        l1_value = int(str_l1_value[::-1])
+        while l2 != None:
+            value = str(l2.val)
+            l2 = l2.next
+            str_l2_value = str_l2_value + value
+        l2_value = int(str_l2_value[::-1])
+        result = str(l1_value + l2_value)[::-1]
+        l3 = ListNode(0)
+        p = l3
+        for i in range(len(result)-1):
+            temp = ListNode(None)
+            p.val = int(result[i])
+            p.next = temp
+            p = temp
+        p.val = int(result[-1])
+        return l3
+
+
+————————————————
+版权声明：本文为CSDN博主「zjrn」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/ZJRN1027/article/details/80109317
