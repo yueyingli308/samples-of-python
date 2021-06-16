@@ -1,0 +1,64 @@
+Input : s = “abcdddddeff” 
+Output : 5 
+Substring is “ddddd”
+Input : s = aabceebeee 
+Output : 3 
+------------- 倒着来看，i-->i-1,逐次比较 ------------------
+def Substring(s):
+ 
+    ans, temp = 1, 1
+ 
+    # Traverse the string
+    for i in range(1, len(s)):
+         
+        # If character is same as previous increment temp value
+        if (s[i] == s[i - 1]):
+            temp += 1
+        else:
+            ans = max(ans, temp)
+            temp = 1
+ 
+    ans = max(ans, temp)
+ 
+    # Return the required answer
+    return ans
+ 
+# Driver code
+s = "abcdddddeff"
+ 
+# Function call
+print(Substring(s))
+
+
+----------- 双指针法 ---------------
+
+def Substring(s):
+ 
+    ans = 1
+    i = 0
+    j = 0
+ 
+    # Traverse the string
+    while i< len(s) and j !=len(s):
+        j = i+1
+        leng = 1
+        while j<len(s):
+            if (s[i] == s[j]):
+                j += 1
+                leng += 1
+            else:
+                ans = max(ans, leng)
+                i = j
+                break
+ 
+    ans = max(ans, leng)
+ 
+    # Return the required answer
+    return ans
+ 
+# Driver code
+s = "abcdddddeff"
+ 
+# Function call
+print(Substring(s))
+ 
