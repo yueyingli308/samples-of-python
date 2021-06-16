@@ -1,0 +1,11 @@
+把某一数 分解成相应的质数相乘
+def func(n):
+    steps = []
+    prime = 2
+    while n>1:
+        while n%prime == 0:
+            n //= prime     ##### 注意，整除用“//”
+            steps.append(prime)
+        prime += 1
+    return steps
+  
