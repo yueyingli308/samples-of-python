@@ -1,0 +1,46 @@
+------------------------  count the number of characters in the string -----------
+Python
+string = "The best of both worlds";  
+count = 0;  
+   
+#Counts each character except space  
+for i in range(0, len(string)):  
+    if(string[i] != ' '):  
+        count = count + 1;  
+        
+--------------------- Simple string manipulation -------------------
+
+
+
+
+
+
+--------------------- dic中平均数最大 -------------------
+
+def get_student_with_highest_avg(li):
+    stu_dict = collections.defaultdict(list)
+    cnt = collections.defaultdict(list)
+    for stu in li:
+        stu_name = stu[0]
+        stu_marks = int(stu[1])
+        if stu_name in stu_dict:
+            stu_prev_avg = stu_dict[stu_name]
+            stu_dict[stu_name] = (stu_marks + stu_prev_avg*cnt[stu_name])/(cnt[stu_name]+1)
+            cnt[stu_name] += 1
+        else:
+            stu_dict[stu_name] = stu_marks
+            cnt[stu_name] = 1
+    
+    # return最大的value/成绩
+    res = 0
+    for v in stu_dict.values():
+        res = max(v,res)
+        
+    ## return对应的key/名字
+    return max(stu_dict, key=stu_dict.get)
+
+
+------------------------- power of 10 ----------------------
+while (input >= 10 && input % 10 == 0) 
+  input /= 10;
+return input == 1;
