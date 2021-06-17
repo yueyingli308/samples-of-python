@@ -45,7 +45,6 @@ class Solution(object):
         :type c: int
         :rtype: float
         """
-        class Solution:
     def knightProbability(self, n: int, k: int, row: int, column: int) -> float:
         dp = [[1 for i in range(n)] for j in range(n)]
         #dp[row][column] = 1
