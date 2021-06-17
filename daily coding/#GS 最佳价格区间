@@ -1,0 +1,63 @@
+“There is a shop, where vendors sell items. They all sell same item but they can change the price of the item during the day. 
+Given intervals of time and a lower price for the item during this interval for each vendor, 
+calculate the cheapest price for the item during the day within different time intervals. 
+Input data for each vendor is {startTime, endTime, price}. 
+For example for 3 vendors in the shop: [{0, 4, 5}, {2, 8, 3}, {7, 11, 10}], the result should be [{0, 2, 5}, {2, 8, 3}, {8, 11, 10}]”
+
+
+-----自己写的简单版 ------
+
+def cheap(p):
+    price = []
+    res = []
+    for i in range(len(p)):
+        price.append(p[i][-1])
+  
+    for i in range(len(p)-1):
+        if p[i][1] < p[i+1][0]:
+            res.append(p[i])
+            
+        elif p[i][1] >= p[i+1][0] and price[i]<price[i+1]:
+            res.append(p[i])
+            
+        elif p[i][1] >= p[i+1][0]and price[i]>=price[i+1]:
+            res.append([p[i][0],p[i+1][0],price[i]])
+            
+        print(res,p[i][1],p[i+1][0])
+        
+    res.append([res[-1][1],p[-1][1],p[-1][2]])
+    return res
+    
+    
+    
+    ---------- 网上相关 ，但好像也不太对？------------
+    struct PI //PriceInterval
+{
+	int start, end, price;
+	PI(int s=0, int e=0, int p=0) : start(s), end(e), price(p) {}
+};
+vector<PI> getMinPricePerInterval(vector<PI>& iPIs)
+{  	
+	sort(iPIs.begin(), iPIs.end(), [](PI a, PI b) { return a.start < b.start; });
+	vector<PI>res{ iPIs[0] };
+	for (int i = 1; i < iPIs.size(); ++i)
+	{   //if prev price is greater than current price
+		//change ONLY previous end = current start
+		if (res.back().price > iPIs[i].price)
+		{   
+			res.back().end = iPIs[i].start;
+			res.push_back(iPIs[i]); //push current			
+		}
+		else //if current price is greater than previous price
+		{
+			if (iPIs[i].end > res.back().end)
+			{
+				PI cur = iPIs[i];
+				cur.start = res.back().end;
+				res.push_back(cur);
+		    }
+			//else, do not add current item in res
+		}			
+	}
+	return res;
+}
