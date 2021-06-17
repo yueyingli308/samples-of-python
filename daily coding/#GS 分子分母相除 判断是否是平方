@@ -1,0 +1,51 @@
+Input: arr1[] = {3, 25, 49, 9}, arr2[] = {27, 64, 7, 3} 
+Output: 2 
+Explanation: 
+(arr1[0] / arr2[0]) = (3 / 27) = (1 / 9) = (1 / 3)2 
+(arr1[1] / arr2[1]) = (25 / 64) = (5 / 8) 2 
+(arr1[0] / arr2[0]) and (arr1[1] / arr2[1]) are perfect square fractions. Therefore, the required output is 2.
+
+---------------- 代码 ---------------
+
+def GCD(a, b):
+     
+    # If b is 0
+    if (b == 0):
+        return a
+         
+    return GCD(b, a % b)
+ 
+# Function to check if N is perfect square
+def isPerfectSq(N):
+ 
+    # Stores square root of N
+    x = (int)(pow(N, 1 / 2))    
+    # Check if N is a
+    # perfect square
+    if (x * x == N):
+        return True
+         
+    return False
+ 
+# Function to count perfect square fractions
+def cntPerSquNum(arr1, arr2, N):
+     
+    # Stores count of perfect square
+    # fractions in both arrays
+    cntPerfNum = 0
+     
+    # Traverse both the arrays
+    for i in range(N):
+ 
+        # Stores gcd of (arr1[i], arr2[i])
+        gcd = GCD(arr1[i], arr2[i])
+ 
+        # If numerator and denomerator of a
+        # reduced fraction is a perfect square
+        if (isPerfectSq(arr1[i] / gcd) and
+            isPerfectSq(arr2[i] / gcd)):
+                 
+            # Update cntPerfNum
+            cntPerfNum += 1
+ 
+    return cntPerfNum
