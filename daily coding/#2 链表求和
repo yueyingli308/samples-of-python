@@ -65,3 +65,46 @@ class Solution:
 ————————————————
 版权声明：本文为CSDN博主「zjrn」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
 原文链接：https://blog.csdn.net/ZJRN1027/article/details/80109317
+
+
+######## 其他简洁些的
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
+        ans = ListNode(0)
+        tmp = ans
+        tmpsum = 0
+        while True:
+            #依次遍历l1 l2，对应位相加
+            if l1 != None:
+                tmpsum += l1.val
+                l1 = l1.next
+            if l2 != None:
+                tmpsum += l2.val
+                l2 = l2.next
+            tmp.val = tmpsum % 10     # 除10取余作为当前位的值
+            tmpsum //= 10                #除10取整，即高位，作为指针的下个结点 进行加法运算
+            print(ans,tmp)
+            
+            if l1 == None and l2 == None and tmpsum == 0:
+                break
+            
+            tmp.next = ListNode(0)
+            tmp = tmp.next
+            print(tmp)
+        return ans
+        
+ input
+ [2,4,3]
+ [5,6,4]
+ 跑出来结果
+ListNode{val: 7, next: None} ListNode{val: 7, next: None}
+ListNode{val: 0, next: None}
+ListNode{val: 7, next: ListNode{val: 0, next: None}} ListNode{val: 0, next: None}
+ListNode{val: 0, next: None}
+
+            
