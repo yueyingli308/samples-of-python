@@ -31,3 +31,23 @@ def isValis(self, s):
                     return False
 
         return not stack
+
+
+------------- 6.24自己写的不对
+def isValid(self, s: str) -> bool:
+        if len(s) == 1:
+            return False
+        dic = {'(':')','{':'}','[':']'}
+        lis = []
+        for c in s:
+            if c in dic:
+                lis.append(c)
+            elif (c not in dic) and (dic[lis[-1]] == c):    ##这里不太好，应该直接写false的地方
+                lis.pop()
+            else:
+                return False
+ ## pop函数
+ print(list.pop()) ---> 最后一位删除的那个值
+list.pop()
+ print(list) ---> 删除了最后一位之后的list，list本身已经被改动过
+        return len(lis) == 0
