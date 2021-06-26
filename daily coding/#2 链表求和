@@ -13,7 +13,49 @@ Explanation: 342 + 465 = 807.
 题目大意
 有两个链表，分别是逆序了的十进制数字。现在要求两个十位数字的和，要求返回的结果也是链表。
 
+##### 视频讲解 https://www.youtube.com/watch?v=IkuWJSYqFAw ##############
 
+######## 其他简洁些的
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
+        ans = ListNode(0)
+        tmp = ans
+        tmpsum = 0
+        while True:
+            #依次遍历l1 l2，对应位相加
+            if l1 != None:
+                tmpsum += l1.val
+                l1 = l1.next
+            if l2 != None:
+                tmpsum += l2.val
+                l2 = l2.next
+            tmp.val = tmpsum % 10     # 除10取余作为当前位的值   当前节点赋值
+            tmpsum //= 10                #除10取整，即高位，作为指针的下个结点 进行加法运算
+            print(ans,tmp)
+            
+            if l1 == None and l2 == None and tmpsum == 0:
+                break
+            
+            tmp.next = ListNode(0)  #为下一个节点提前赋值
+            tmp = tmp.next   ##这里是指针指向下一个节点的意思吧
+            print(tmp)
+        return ans
+        
+ input
+ [2,4,3]
+ [5,6,4]
+ 跑出来结果
+ListNode{val: 7, next: None} ListNode{val: 7, next: None}
+ListNode{val: 0, next: None}
+ListNode{val: 7, next: ListNode{val: 0, next: None}} ListNode{val: 0, next: None}
+ListNode{val: 0, next: None}
+
+            
 ————————————————
 了比较笨的办法，先遍历两个链表，将链表的值取反，然后相加，再取反，再构建新的链表。
 
@@ -21,7 +63,7 @@ Explanation: 342 + 465 = 807.
 
 最后构造新的链表的时候用到了p，可以理解为一个指针。
 
-网上还有其他方法直接在链表中求和进位，感觉回比这种方法效率更高。
+网上还有其他方法直接在链表中求和进位，感觉回比这种方法效率更高。    下面的思路有些冗杂，不必要
 
 # Definition for singly-linked list.
 # class ListNode:
@@ -66,45 +108,3 @@ class Solution:
 版权声明：本文为CSDN博主「zjrn」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
 原文链接：https://blog.csdn.net/ZJRN1027/article/details/80109317
 
-
-######## 其他简洁些的
-# Definition for singly-linked list.
-# class ListNode:
-#     def __init__(self, val=0, next=None):
-#         self.val = val
-#         self.next = next
-class Solution:
-    def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
-        ans = ListNode(0)
-        tmp = ans
-        tmpsum = 0
-        while True:
-            #依次遍历l1 l2，对应位相加
-            if l1 != None:
-                tmpsum += l1.val
-                l1 = l1.next
-            if l2 != None:
-                tmpsum += l2.val
-                l2 = l2.next
-            tmp.val = tmpsum % 10     # 除10取余作为当前位的值
-            tmpsum //= 10                #除10取整，即高位，作为指针的下个结点 进行加法运算
-            print(ans,tmp)
-            
-            if l1 == None and l2 == None and tmpsum == 0:
-                break
-            
-            tmp.next = ListNode(0)
-            tmp = tmp.next
-            print(tmp)
-        return ans
-        
- input
- [2,4,3]
- [5,6,4]
- 跑出来结果
-ListNode{val: 7, next: None} ListNode{val: 7, next: None}
-ListNode{val: 0, next: None}
-ListNode{val: 7, next: ListNode{val: 0, next: None}} ListNode{val: 0, next: None}
-ListNode{val: 0, next: None}
-
-            
