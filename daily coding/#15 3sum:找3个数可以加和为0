@@ -45,7 +45,7 @@ class Solution(object):
                     res.append([nums[t], nums[i], nums[j]])
                     i += 1
                     j -= 1
-                    while i < j and nums[i] == nums[i - 1]:  #前后值相同 跳过！
+                    while i < j and nums[i] == nums[i - 1]:  #前后值相同 跳过！（还是为了忽略掉重复的可能性排列）
                         i += 1
                     while i < j and nums[j] == nums[j + 1]:
                         j -= 1
