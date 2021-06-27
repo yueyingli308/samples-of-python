@@ -16,7 +16,7 @@ split(’ ')的时候，多个空格都要分割，每个空格分割出来空�
 
 class Solution:
     def reverseWords(self, s: str) -> str:
-        return " ".join(s.split()[::-1])
+        return " ".join(s.split()[::-1]).      ------>注意split里是空的（）
         
         ######### 解释！ ################
         return " ".join(s.split()[::-1]).  #### s.split()成一个有word的list，[::-1]把单词倒置
@@ -32,3 +32,11 @@ class Solution:
 ————————————————
 版权声明：本文为CSDN博主「负雪明烛」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
 原文链接：https://blog.csdn.net/fuxuemingzhu/article/details/80810249
+
+########## 6.27
+str:表示为分隔符，默认为空格，
+如果是 split.(" ") 括号里有空格，有时候返回会得到 空('')，如下：
+s = "world hello "
+s.split(' ')
+
+['world', 'hello', '']  原句的hello后面空格又跟着一个‘’空也算进去了
