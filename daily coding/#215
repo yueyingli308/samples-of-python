@@ -40,3 +40,22 @@ public:
 ————————————————
 版权声明：本文为CSDN博主「负雪明烛」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
 原文链接：https://blog.csdn.net/fuxuemingzhu/article/details/79264797
+
+
+########### 6.27 笔记
+1. nums.max() 对list不可用
+
+2.用传统排序也可，但是会超时
+def findKthLargest(self, nums: List[int], k: int) -> int:
+        for i in range(k):
+            for j in range(len(nums)-1,0,-1):
+                if nums[j]>nums[j-1]:
+                    tmp = nums[j]
+                    nums[j] = nums[j-1]
+                    nums[j-1] = tmp
+                else:
+                    continue
+        return nums[k-1]
+                
+        
+
