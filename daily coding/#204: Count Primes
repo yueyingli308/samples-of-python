@@ -1,12 +1,20 @@
-从上面的厄拉多塞筛法可以看出，我们只需遍历[2,],因为超过部分如果不是素数，则作为因子在前面的数已经被删除了。同时这里利用了python里list的特性[::i]取i的倍数。
+Input: 10
+Output: 4
+Explanation: There are 4 prime numbers less than 10, they are 2, 3, 5, 7.
+注意是比n小的 所有质数个数
 
+############## 解析
+
+从上面的厄拉多塞筛法可以看出，我们只需遍历[2,int(n ** 0.5)],因为超过部分如果不是素数，则作为因子在前面的数已经被删除了。同时这里利用了python里list的特性[::i]取i的倍数。
+   ####要求小于n的所有素数，一个高效的算法是“素数筛选法”。其思想是从小的素数开始，排除该小素数的所有倍数，直到最终剩下的全是素数。具体的算法可以参考：
+   
 def countPrimes(self, n):
     if n < 3:
         return 0
     primes = [True] * n
     primes[0] = primes[1] = False
     for i in range(2, int(n ** 0.5) + 1):
-        if primes[i]:
+        if primes[i]:   #已经经标记为false的非质数就跳过了
             primes[i * i: n: i] = [False] * len(primes[i * i: n: i])
             ### [i * i: n: i] ---> 从i*i 到 n，每次跳过i过格子
     return sum(primes)
