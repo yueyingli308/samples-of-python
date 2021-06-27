@@ -12,7 +12,7 @@ def two_sum(lst, k):
                 return True
   return False
   
-#Sol 2
+#Sol 2                                  ###本题只是判断“有没有”，所以用set或者dic看有没有k - num在
 def two_sum(lst, k):
     seen = set()
     for num in lst:
