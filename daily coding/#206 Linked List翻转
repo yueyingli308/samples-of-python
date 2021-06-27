@@ -1,0 +1,42 @@
+方法二：
+Reverse Linked List
+Input: head = [1,2,3,4,5]
+Output: [5,4,3,2,1]
+
+
+
+首先创建一个新的list
+然后将原始链表中的value全部遍历进新的list中
+
+然后每次取list中的最后一个值，放进链表中
+
+更新链表后返回
+
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+ 
+class Solution(object):
+    def reverseList(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        if not head or not head.next:
+            return head
+        node = head
+        temp = []
+        while node:
+            temp.append(node.val)
+            node = node.next
+        node = head
+        while temp:
+            node.val = temp.pop()
+            node = node.next
+        return head
+
+————————————————
+版权声明：本文为CSDN博主「zjrn」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/ZJRN1027/article/details/80472978
