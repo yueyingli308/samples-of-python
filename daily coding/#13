@@ -20,7 +20,7 @@ class Solution(object):
         N = len(s)
         for i in range(N - 2, -1, -1):    ####从后往前可以帮助解决I X C的双重数值，用if区分
             if roman[s[i]] < roman[s[i + 1]]:
-                res -= roman[s[i]]
+                res -= roman[s[i]]      #和 i+1 的后一位比较大小
             else:
                 res += roman[s[i]]
         return res
