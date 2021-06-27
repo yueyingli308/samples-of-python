@@ -24,3 +24,11 @@ class Solution(object):
 ————————————————
 版权声明：本文为CSDN博主「负雪明烛」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
 原文链接：https://blog.csdn.net/fuxuemingzhu/article/details/82960833
+
+
+####### 6.27
+采用递归来实现二分。分以下四种情况考虑：
+1. n ==0 ,返回1.0
+2. n < 0， 返回1/pow(x,-n)
+3. n % 2 == 0,返回pow(x*x,n/2)
+4. n % 2 == 1，返回pow(x*x,n/2) * x
