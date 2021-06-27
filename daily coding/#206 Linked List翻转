@@ -40,3 +40,29 @@ class Solution(object):
 ————————————————
 版权声明：本文为CSDN博主「zjrn」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
 原文链接：https://blog.csdn.net/ZJRN1027/article/details/80472978
+
+
+
+
+#### 自己新建一个listNode存入倒着的list数
+def reverseList(self, head: ListNode) -> ListNode:
+        if not head or not head.next:
+            return head
+          
+        lis = []
+        node = head
+        while node:
+            lis.append(node.val)
+            node = node.next #zheli
+        lis = lis[::-1]
+        #print(lis)
+        
+        res1 = ListNode(None)   ####挨个把listnode添上value
+        res = res1
+        for i in lis[:-1]:
+            res.val = i
+            res.next = (ListNode(None))
+            res = res.next
+        res.val = lis[-1]
+        return res1
+            
