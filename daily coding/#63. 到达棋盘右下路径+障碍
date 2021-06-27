@@ -18,7 +18,7 @@ class Solution(object):
                 if obstacleGrid[i][j] == 1:     ##本题与unique path I的区别仅在于此，判断是障碍后path路径数清空为1！ 其他与前几乎相同
                     dp[i][j] = 0
                 else:                      ###这里记得也要再写一个else！！
-                    if i != 0:
+                    if i != 0:  #边缘格子都单独考虑
                         dp[i][j] += dp[i - 1][j]
                     if j != 0:
                         dp[i][j] += dp[i][j - 1]
