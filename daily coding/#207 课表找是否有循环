@@ -35,17 +35,21 @@
 Python3实现： 
 # @Time   :2018/12/04
 # @Author :LiuYinxing
-# 深度优先搜索
-
+# 深度优先搜索，时间复杂度是O(N ^ 2)，空间复杂度是O(N)。
+# DFS,本质是找有没有闭环，搜索着发现又回到自己的位置了
 
 class Solution:
     def canFinish(self, numCourses, prerequisites):
-        
+    
+         ###### 1.创建各个点点链接关系，即graph表，另建visit是对每个点到访记录做标记
+         
         graph = [[] for _ in range(numCourses)]
         visit = [0 for _ in range(numCourses)]
         for x, y in prerequisites:  # 转换成邻接表的形式
             graph[x].append(y)
 
+        ###### 2.建立DFS从某点开始沿着他的连接点进行搜索
+        
         def dfs(graph, v):  # 从顶点v 出发深度优先搜索图G，判断图中是否存在回路
             visit[v] = -1  # 访问过标记
 
@@ -57,7 +61,9 @@ class Solution:
 
             visit[v] = 1  # 被访问过，从这个点从发得到的结果是正确的，标记1，避免下次继续访问，剪枝情况
             return True
-
+            
+        #### 3.列出来的每个点都进行一遍遍历
+        
         for v in range(numCourses):
             if not dfs(graph, v):
                 return False
