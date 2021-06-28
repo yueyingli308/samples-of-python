@@ -65,3 +65,34 @@ class Solution:
 ————————————————
 版权声明：本文为CSDN博主「GrowthDiary007」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
 原文链接：https://blog.csdn.net/XX_123_1_RJ/article/details/84787393
+
+################ 另一种思路方法
+https://zhenyu0519.github.io/2020/07/24/lc207/
+Methodology
+This is a graph question. Any graph question to get directed acyclic graph (DAG) should think about using the topologic sort. This question is great practices. 
+We return false if there is cycle in this graph otherwise return true.
+
+First we build up two distionary, one is for all courses with their prerequesties and the other is the all prerequesties with their courses. 
+Now we iterate all couses number and find the couses that has no prerequesties and append it to stack and we keep counting such course. 
+For the couses which does not have prerequesties, they may be other couses’ prequesties now we need to find these couses. From these couses’ prerequesties 
+we remove the the couse that we jsut find that does not have prerequesties. After remove if the couse has no prequesties, then we append this course to the stack. 
+We keep iterating the stack until the stack is empty now we need to compare the count and given numCourses if they are equal we return true.
+
+BFS:
+
+def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        courses = collections.defaultdict(set)
+        pres = collections.defaultdict(set)
+        for course, pre in prerequisites:
+            courses[course].add(pre)
+            pres[pre].add(course)
+        no_pre_courses = [n for n in range(numCourses) if not courses[n]]
+        count = 0
+        while no_pre_courses:
+            no_pre = no_pre_courses.pop()
+            count+=1
+            for course in pres[no_pre]:
+                courses[course].remove(no_pre)
+                if not courses[course]:
+                    no_pre_courses.append(course)
+        return count == numCourses
