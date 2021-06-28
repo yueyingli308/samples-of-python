@@ -67,32 +67,48 @@ class Solution:
 原文链接：https://blog.csdn.net/XX_123_1_RJ/article/details/84787393
 
 ################ 另一种思路方法
-https://zhenyu0519.github.io/2020/07/24/lc207/
-Methodology
-This is a graph question. Any graph question to get directed acyclic graph (DAG) should think about using the topologic sort. This question is great practices. 
-We return false if there is cycle in this graph otherwise return true.
+方法一：拓扑排序，BFS
+看到给的第二个测试用例立马就明白了，就是判断这些课程能否构成有向无环图（DAG）。而任何时候判断DAG的方法要立刻想到拓扑排序。
 
-First we build up two distionary, one is for all courses with their prerequesties and the other is the all prerequesties with their courses. 
-Now we iterate all couses number and find the couses that has no prerequesties and append it to stack and we keep counting such course. 
-For the couses which does not have prerequesties, they may be other couses’ prequesties now we need to find these couses. From these couses’ prerequesties 
-we remove the the couse that we jsut find that does not have prerequesties. After remove if the couse has no prequesties, then we append this course to the stack. 
-We keep iterating the stack until the stack is empty now we need to compare the count and given numCourses if they are equal we return true.
+拓扑排序是对有向无环图（DAG）而言的，对图进行拓扑排序即求其中节点的一个拓扑序列，对于所有的有向边（U, V）（由U指向V），在该序列中节点U都排在节点V之前。
 
-BFS:
+方法是每次选择入度为0的节点，作为序列的下一个节点，然后移除该节点和以从节点出发的所有边。
 
-def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
-        courses = collections.defaultdict(set)
-        pres = collections.defaultdict(set)
-        for course, pre in prerequisites:
-            courses[course].add(pre)
-            pres[pre].add(course)
-        no_pre_courses = [n for n in range(numCourses) if not courses[n]]
-        count = 0
-        while no_pre_courses:
-            no_pre = no_pre_courses.pop()
-            count+=1
-            for course in pres[no_pre]:
-                courses[course].remove(no_pre)
-                if not courses[course]:
-                    no_pre_courses.append(course)
-        return count == numCourses
+那这个方法比较简单粗暴了：要循环N次，这个循环次数并不是遍历节点的意思，而是我们如果正常取点的话，N次就能把所有的节点都取完了，如果N次操作结束还没判断出来，那么就不是DAG.在这N次中，每次都找一个入度为0的点，并把它的入度变为-1，作为已经取过的点不再使用，同时把从这个点指向的点的入度都-1.
+
+这个过程中，如果找不到入度为0的点，那么说明存在环。如果N次操作，每次都操作成功的去除了一个入度为0的点，那么说明这个图是DAG.
+
+时间复杂度是O(N ^ 2)，空间复杂度是O(N)。
+
+import collections
+def canFinish(N, prerequisites):
+    """
+    :type N,: int
+    :type prerequisites: List[List[int]]
+    :rtype: bool
+    """
+    graph = collections.defaultdict(list)
+    indegrees = collections.defaultdict(int)
+    for u, v in prerequisites:
+        graph[v].append(u)
+        indegrees[u] += 1
+    print(graph,indegrees)
+    
+    for i in range(N):
+        zeroDegree = False
+        for j in range(N):
+            print(j)
+            if indegrees[j] == 0:
+                print(j,indegrees[j])
+                zeroDegree = True
+                break
+        print(zeroDegree)
+        if not zeroDegree: return False
+        indegrees[j] = -1
+        for node in graph[j]:
+            indegrees[node] -= 1
+        print(indegrees)
+    return True      
+
+就算是一个不存在的key, d[key] 也有一个默认值，这个默认值是int()的默认值0.
+
