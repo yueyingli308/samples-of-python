@@ -51,28 +51,23 @@ class Solution(object):
 然后遍历链表并拷贝两个指针。因为任意指针可能指向空指针，所以在字典中添加一个空指针项。
 
 代码
-class Solution(object):
-    def copyRandomList(self, head):
-        """
-        :type head: RandomListNode
-        :rtype: RandomListNode
-        """
+递归
+class Solution:
+    def __init__(self):
+        self.visited = {}
+    def copyRandomList(self, head: 'Node') -> 'Node':
         if not head:
             return None
-        visited = dict()
-        # 复制值
-        node = head
-        while node:
-            visited[node] = RandomListNode(node.label)
-            node = node.next
-
-        # 给一个空值
-        visited[None] = None
-
-        # 复制关系
-        node = head
-        while node:
-            visited[node].next = visited[node.next]
-            visited[node].random = visited[node.random]
-            node = node.next
-        return visited[head]
+        
+        if head in self.visited:
+            return self.visited[head]
+        
+        node = Node(head.val,None,None)
+        self.visited[head] = node
+        
+        node.next = self.copyRandomList(head.next)
+        node.random = self.copyRandomList(head.random)
+        
+        return node
+————————————————
+视频对应的解释 https://www.youtube.com/watch?v=RK5KaR_gbg8
