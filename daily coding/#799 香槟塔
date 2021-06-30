@@ -47,9 +47,9 @@ class Solution(object):
         dp[0][0] = poured
         for i in range(query_row):   #只计算到query的行，题目里基本上是一定会倒到这一行的
             for j in range(i + 1):
-                if dp[i][j] > 1:
+                #if dp[i][j] > 1:
                     dp[i + 1][j    ] += max((dp[i][j] - 1),0) / 2.0       #反方向想，当前酒杯里的酒是从上层的2个杯子倒掉自身的’1‘得到的，最后return时和1比大小
-                    dp[i + 1][j + 1] += (dp[i][j] - 1) / 2.0
+                    dp[i + 1][j + 1] += max(dp[i][j] - 1) / 2.0
         return min(1, dp[query_row][query_glass])
 ————————————————
 版权声明：本文为CSDN博主「负雪明烛」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
