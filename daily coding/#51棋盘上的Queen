@@ -31,7 +31,7 @@ class Solution:
             return True
         def dfs(depth,valuelist):       ####dfs的设置,第几行，改行的层层累加结果
             if depth == n:
-                res.append(valuelist)
+                res.append(valuelist)       ###n遍历完了把此次的结果放到总结果单上
                 return                  #！！！！！！在这里直接写上‘return’！！！！！#
             else:
                 for i in range(n):      ###2. 否则就回溯放到第col+1列试试
@@ -39,7 +39,7 @@ class Solution:
                         board[depth]=i
                         s='.'*n
                         dfs(depth+1,valuelist+[s[:i]+'Q'+s[i+1:]])    ###1.如果第row行放在第col列成功了，就继续搜索第row+1行
-        
+                                    ###上面是把单次的结果加一上i行的放置情况
         ######单独设置universe var
         res=[]
         board = [0 for i in range(n)]
