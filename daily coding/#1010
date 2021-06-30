@@ -93,6 +93,8 @@ class Solution:
     def numPairsDivisibleBy60(self, time: List[int]) -> int:
         cnt = Counter()  #一个 Counter 是一个 dict 的子类，用于计数可哈希对象。 
                           #它是一个集合，元素像字典键(key)一样存储，它们的计数存储为值。 计数可以是任何整数值，包括0和负数。 Counter 类有点像其他语言中的bags或multisets。
+       #cnt = [0 for _ in range(60)]. 也可
+       
         res = 0
         for t in time:
             res += cnt[-t % 60]。  #trick这里要额外注意，是一个数学变换，相当于cnt[(60-t%60)%60]
@@ -105,6 +107,4 @@ class Solution:
 原文链接：https://blog.csdn.net/qq_17550379/article/details/88633878
 
 
-————————————————
-版权声明：本文为CSDN博主「暴躁老哥在线刷题」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
-原文链接：https://blog.csdn.net/qq_32424059/article/details/88664635
+
