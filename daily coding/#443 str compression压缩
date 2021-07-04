@@ -31,11 +31,11 @@ class Solution:
     def compress(self, chars: List[str]) -> int:
       n = len(chars)
       i , count = 0 , 1
-      for j in range(1,n+1):
+      for j in range(1,n+1):  ##取到最大值n是为了else里的chars[i] = chars[j-1]  
           if j < n and chars[j] == chars[j-1]:
               count += 1
           else:
-              chars[i] = chars[j-1]
+              chars[i] = chars[j-1]  ###这里i只取j-1的值，所以到这里的j最后取n时能够覆盖到最后一位数据
               i += 1.   ##一旦计入，指针要自动后加一位
               if count > 1:    ##注意在题目中，树木唯一的字母后面不加数1
                   for m in str(count):
