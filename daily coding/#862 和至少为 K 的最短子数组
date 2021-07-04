@@ -30,7 +30,7 @@ def shortestSubarray(self, A, K):
       queue, res = collections.deque(), n + 1  # 初始化队列、结果变量
       for i in range(n+1):
           while queue and dp[i] <= dp[queue[-1]]:
-              queue.pop()  # 出队, 删除不符合的
+              queue.pop()  # 出队, 删除不符合的 ---- 理解：因为找的是大于等于，所以dp的值小的话相当于出现负数，把它前面的排序数减去代表不可能有附属打头的sub数列
 
           while queue and dp[i] - dp[queue[0]] >= K:
               res = min(res, i - queue.popleft())  # 从左边出队，并更新最短距离。
