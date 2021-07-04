@@ -5,7 +5,8 @@
 len(X1) + len(Y1) == len(X2) + len(Y2)
 或
 len(X1) + len(Y1) == len(X2) + len(Y2) + 1
-并且使得 max(X1) < min(Y2), max(Y1) < min(X2)，这样数组就被完整地分成了两部分。
+并且使得 max(X1) < min(Y2), max(Y1) < min(X2)，这样数组就被完整地分成了两部分。  ###本质数两个数组的嵌套+重新排序找到中位数
+https://blog.csdn.net/XX_123_1_RJ/article/details/84572284。切割法里有解释
 
 如果两个数组长度的和是奇数，那么必然是 max(X1, Y1)了；
 如果两个数组长度的和是偶数，那么是 (max(X1, Y1) + min(X2, Y2)) / 2
@@ -26,7 +27,7 @@ class Solution:
         while imin <= imax:
             i = int((imin + imax) / 2)
             j = half_len - i
-            # 确定 i j 两个值
+            # 确定 i j 两个值，用的二分法
             if i < m and nums2[j - 1] > nums1[i]:  # 现在说名 i 太小，应该增加
                 imin = i + 1
             elif i > 0 and nums1[i - 1] > nums2[j]:  # 现在说名 i 太大，应该减小
