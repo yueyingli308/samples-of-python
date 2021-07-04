@@ -1,0 +1,81 @@
+Skyline
+---------- 一进一出，pre_h是存入的最小值，cur_p是当前的
+class Solution(object):
+    def getSkyline(self, buildings):
+        n = len(buildings)
+        points = sorted([(buildings[i][0], buildings[i][2], 's') for i in range(n)] +
+                        [(buildings[i][1], buildings[i][2], 'e') for i in range(n)])
+        print points
+        result, maxHeap = [], []
+        for p in points:
+            pre_height = - maxHeap[0] if maxHeap else 0
+            if p[2] == 's':
+                heappush(maxHeap, -p[1])
+            else:
+                heappop(maxHeap)
+            cur_height = - maxHeap[0] if maxHeap else 0
+ 
+            if p[2] == 's' and p[1] > pre_height:
+                result.append([p[0], p[1]])
+            elif p[2] == 'e' and p[1] > cur_height:
+                result.append([p[0], cur_height])
+ 
+        return result
+https://www.cnblogs.com/lightwindy/p/8532239.html
+
+
+######################### 解法2
+另一个解法
+class Solution(object):
+    def getSkyline(self, buildings):
+        """
+        :type buildings: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        events = []
+        for l, r, h in buildings:
+            events.append([l, -h, r])
+            events.append([r, 0, -1])
+        events.sort()
+        res, hp = [], [(0, float("inf"))]
+        for l, h, r in events:
+            while l >= hp[0][1]: 
+                heapq.heappop(hp) 
+            if h:
+                heapq.heappush(hp, (h, r))
+            if not res or res[-1][1] != -hp[0][0]: 
+                res.append([l, -hp[0][0]])
+        return res
+ 
+https://nagato1208.github.io/2019/08/25/leetcode-218-The-Skyline-Problem/
+https://leetcode.com/problems/the-skyline-problem/discuss/1285266/Python-solution-with-explanation
+
+
+
+##################### 类似的题目
+最佳价格区间
+    ---------- 一进一出，pre_h是存入的最小值，cur_p是当前的，返回最小值 ----------
+
+import heapq
+def getSkyline(buildings):
+    n = len(buildings)
+    points = sorted([(buildings[i][0], buildings[i][2], 's') for i in range(n)] +
+                    [(buildings[i][1], buildings[i][2], 'e') for i in range(n)])
+    print (points)
+    result, maxHeap = [], []
+    for p in points:
+        pre_height =  maxHeap[0] if maxHeap else 0
+        if p[2] == 's':
+            heapq.heappush(maxHeap, p[1])
+        else:
+            heapq.heappop(maxHeap)
+        cur_height = maxHeap[0] if maxHeap else 0
+        print(maxHeap,p[1],pre_height,cur_height)
+
+        if p[2] == 's' and p[1] <= cur_height:
+            result.append([p[0], p[1]])
+        elif p[2] == 'e' and p[1] < pre_height:
+            result.append([p[0], min(pre_height,cur_height)])
+        print(result)
+
+    return result
