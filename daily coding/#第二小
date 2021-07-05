@@ -1,3 +1,6 @@
+解决有duplicate的情况
+O（N）
+
 >>> def second_smallest(lst):
 ...     first = second = float("inf")
 ...     for num in lst:
@@ -9,8 +12,18 @@
 
 
 
+##### 排序解决
  input_list.sort()
     return input_list[1]
     
-  l = sort(set(nums))
- return l[1] 
+def secmin(nums):
+    l = set(nums)
+    return list(l)[1]
+
+
+#### 找第二小的位置 find the position of the second lowest value in lst
+lst = [7,3,6,4,6]
+
+lst.index(sorted(lst)[1])
+
+Out[161]: 3
