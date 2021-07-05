@@ -1,0 +1,37 @@
+题意分析：
+
+　　给定一个排好序的链表，将这个链表转换成一个高度平衡树。
+
+把一个单链表转成二叉平衡树。二叉平衡树是左右子树的高度差最多为1.
+
+解题方法
+这个题目和108. Convert Sorted Array to Binary Search Tree基本一模一样啊！所以毫无疑问地，我把链表转成了数组，然后再用108题的做法就过了。
+
+而且这个题神奇的地方在于，使用python2超时，但是使用Python3就通过了。以后还是尽量用python3比较好吧。。
+
+哦对，python3要用地板除。
+————————————————
+版权声明：本文为CSDN博主「负雪明烛」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/fuxuemingzhu/article/details/80785093
+
+
+class Solution:
+    def sortedListToBST(self, head):
+        """
+        :type head: ListNode
+        :rtype: TreeNode
+        """
+        nums = []
+        while head:
+            nums.append(head.val)
+            head = head.next
+        return self.helper(nums)
+
+    def helper(self, nums):
+        if not nums: return None
+        _len = len(nums)
+        mid = _len // 2
+        root = TreeNode(nums[mid])
+        root.left = self.helper(nums[:mid])
+        root.right = self.helper(nums[mid+1:])
+        return root
