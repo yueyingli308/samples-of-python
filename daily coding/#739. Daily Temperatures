@@ -1,0 +1,72 @@
+题目描述
+Given a list of daily temperatures, produce a list that, for each day in the input, tells you how many days you would have to wait until a warmer temperature. 
+If there is no future day for which this is possible, put 0 instead.
+
+For example, given the list temperatures = [73, 74, 75, 71, 69, 72, 76, 73], your output should be [1, 1, 4, 2, 1, 1, 0, 0].
+1
+Note: The length of temperatures will be in the range [1, 30000]. Each temperature will be an integer in the range [30, 100].
+
+解题方法
+倒序遍历
+这个题难在找到下一个比当前气温高的位置和当前位置的差。注意到题目中温度变化范围只有60，而天数的变化范围有30000，所以对温度遍历是可以接受的，对天数遍历不可接受。
+
+所以我们倒序遍历温度，保留每个温度的最新的天数位置，保存在字典中。对当前的温度，我们从字典中找所有比他大的温度的位置，保留最小值。如果没有比他大的，就写入0.
+
+class Solution(object):
+    def dailyTemperatures(self, temperatures):
+        """
+        :type temperatures: List[int]
+        :rtype: List[int]
+        """
+        save = {}
+        answer = []
+        for day in range(len(temperatures) - 1, -1, -1):
+            temp = temperatures[day]
+            save[temp] = day
+            larger = []
+            for i in range(temp + 1, 102):
+                if i in save:
+                    larger.append(save[i] - day)
+            if larger:
+                answer.append(min(larger))
+            else:
+                answer.append(0)
+        return answer[::-1]
+————————————————
+版权声明：本文为CSDN博主「负雪明烛」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/fuxuemingzhu/article/details/79285081
+
+
+###################### 方法2
+
+如果正序遍历数组，找到一个温度，记录下来该温度的位置，然后再向后查找，直到找到大于该温度的位置。将两个位置做差，存到相应的res[i]中。这么做时间复杂度有点高。
+从右向左也就是逆序遍历数组会减少很多重复性的工作。从右向左，如果该位置的值是最大的，那么令res[i]=0,使用一个新的变量current_max来记录目前出现过的最大值。
+如果该位置的值小于current_max，那么就一定存在大于该位置温度的温度值。需要逐个向后查找，直到找到大于该位置的温度值。
+在向后查找的过程中，又不需要每次都向后进一个，可以利用之前已经完成的res数组加速查找，加快跳转。
+O(n) time, O(1)
+
+class Solution:
+    def dailyTemperatures(T):
+        n=len(T)
+        current_max=0
+        res=[0]*n
+        for i in range(n-1,-1,-1):
+            t=T[i]
+            if current_max <=t:
+                current_max=t
+            else:
+                temp=1
+                while T[i+temp]<=t:
+                    temp+=res[i+temp] #蹦到后一个数来看是否比自己大，还小就看这一位数蹦几步(min)找到比自己大的位置,
+                                        #加到temp上再来和自己比较，直到找到了比自身大的数。  
+                                        #要理解res[i]的值就是找到的第一个比自己大的数的步数，一步步蹦过去看
+                res[i]=temp
+            print(res)
+        return res
+        
+#the algorithm essentially only keeps the monotonely increasing part of the original sequence. Thus the complexity is O(n).
+#该算法基本上只保留原始序列中单调增加的部分。因此，复杂度为O(n)。
+
+————————————————
+版权声明：本文为CSDN博主「orientliu96」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/Orientliu96/article/details/103497044
