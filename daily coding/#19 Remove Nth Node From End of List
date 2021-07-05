@@ -1,0 +1,95 @@
+Example:
+
+Given linked list: 1->2->3->4->5, and n = 2.
+
+After removing the second node from the end, the linked list becomes 1->2->3->5.
+Note:
+
+Given n will always be valid.
+Follow up:
+
+Could you do this in one pass?
+题目大意
+删除一个单链表的倒数第n个节点。
+
+解题方法
+双指针
+先来分析一下这个题埋的坑吧。
+第一，首先要判断这个n是不是有效，如果n超出链表长度怎么办，还好题目给了n是有效的。
+第二，如果要删除头结点怎么办？估计很多人栽在了这个上面。
+第三，题目说的是单链表没错，但是是否有环呢？当有环的时候，没有倒数第n个节点，你让我怎么办？很遗憾，题目没有说明这一点，我认为这是题目不严谨的地方。
+
+具体到解法，这个题肯定是使用快慢指针啊，两个之间的距离是n，所以当快指针指向结尾的时候，慢指针正好指向了倒数第n个。因为要删除慢指针的位置，所以需要一个pre指针记录一下前面的那个节点的位置。
+
+由于有可能删除首节点，所以使用哑结点当做新的头可以解决。
+
+Python代码如下：
+
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def removeNthFromEnd(self, head, n):
+        """
+        :type head: ListNode
+        :type n: int
+        :rtype: ListNode
+        """
+        root = ListNode(0)
+        root.next = head
+        fast, slow, pre = root, root, root
+        while n - 1:
+            fast = fast.next
+            n -= 1
+        while fast.next:
+            fast = fast.next
+            pre = slow
+            slow = slow.next
+        pre.next = slow.next
+        return root.next
+        
+
+————————————————
+版权声明：本文为CSDN博主「负雪明烛」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/fuxuemingzhu/article/details/80786149
+
+
+
+思路：
+
+本题需要维护两个指针，pre和end。一开始初始化时使得pre指针指向链表头节点，end指针指向pre+n的节点位置。
+然后同时往后移动pre和end指针位置，使得end指针指向最后一个节点，那么pre指针指向的则是end-n的节点位置（即倒数第n个元素的前一个节点），则将其删除。
+链表长度为n时，算法复杂度O(n)。
+代码：
+
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+
+class Solution(object):
+    def removeNthFromEnd(self, head, n):
+        """
+        :type head: ListNode
+        :type n: int
+        :rtype: ListNode
+        """
+        pre = head
+        end = head
+        for _ in range(n):
+            end = end.next
+        if end is None:  # 需要删除的节点为第一个节点时，即返回第二个节点为头节点的链表
+            return head.next
+        while end.next is not None:
+            pre = pre.next
+            end = end.next
+        pre.next = pre.next.next 
+        return head
+————————————————
+版权声明：本文为CSDN博主「dongrongyu」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/dongrongyu/article/details/78346583
